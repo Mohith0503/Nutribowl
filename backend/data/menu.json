@@ -1,0 +1,472 @@
+{
+  "bases": [
+    {
+      "id": "b1",
+      "name": "All Mix Oats (Fruits & Nuts)",
+      "price": 120,
+      "tags": [
+        "Fiber Rich",
+        "Fresh Fruits"
+      ],
+      "desc": "A wholesome mix of organic oats soaked overnight, topped with handpicked seasonal fruits and crunchy premium nuts.",
+      "image": "https://images.unsplash.com/photo-1517673132405-a56a62b18caf?w=600&q=80",
+      "inStock": true
+    },
+    {
+      "id": "b2",
+      "name": "Dry Fruits Oats",
+      "price": 130,
+      "tags": [
+        "High Protein",
+        "Healthy Fats"
+      ],
+      "desc": "Classic organic oats loaded with premium raisins, almonds, walnuts, and select premium dried fruits.",
+      "image": "",
+      "inStock": true
+    },
+    {
+      "id": "b3",
+      "name": "Fruit Oats",
+      "price": 110,
+      "tags": [
+        "Fresh Fruits",
+        "Fiber Rich"
+      ],
+      "desc": "Light and healthy oatmeal topped with fresh seasonal fruit slices, naturally sweetened.",
+      "image": "https://images.unsplash.com/photo-1614961909372-5e11b6a0ae54?w=600&q=80",
+      "inStock": true
+    },
+    {
+      "id": "b4",
+      "name": "High Protein Oats Chocolate",
+      "price": 150,
+      "tags": [
+        "High Protein"
+      ],
+      "desc": "Protein-packed classic rolled oats infused with premium, rich dark cocoa and organic plant protein.",
+      "image": "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=600&q=80",
+      "inStock": true
+    },
+    {
+      "id": "b5",
+      "name": "Muesli",
+      "price": 125,
+      "tags": [
+        "Fiber Rich"
+      ],
+      "desc": "Traditional Swiss-style muesli featuring multi-grains, honey, select seeds, and sun-dried fruit bits.",
+      "image": "https://images.unsplash.com/photo-1504308805006-0f7a5f1adea4?w=600&q=80",
+      "inStock": true
+    },
+    {
+      "id": "b6",
+      "name": "Plain Oats (Soaked/Boiled)",
+      "price": 90,
+      "tags": [
+        "Fiber Rich"
+      ],
+      "desc": "Simplicity at its best. Perfectly soaked or boiled premium organic oats, the classic canvas for custom toppings.",
+      "image": "https://images.unsplash.com/photo-1495214783159-3503fd1b572d?w=600&q=80",
+      "inStock": true
+    },
+    {
+      "id": "b7",
+      "name": "Brown Bread",
+      "price": 80,
+      "tags": [
+        "Fiber Rich"
+      ],
+      "desc": "Two slices of freshly baked, wholesome brown bread made from local organic wheat.",
+      "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&q=80",
+      "inStock": true
+    },
+    {
+      "id": "b8",
+      "name": "Multi Grain Bread",
+      "price": 95,
+      "tags": [
+        "Fiber Rich",
+        "High Protein"
+      ],
+      "desc": "Two slices of rustic multi-grain bread baked fresh with linseed, sunflowers, pumpkin, and sesame seeds.",
+      "image": "https://images.unsplash.com/photo-1549931319-a545dcf3bc7c?w=600&q=80",
+      "inStock": true
+    },
+    {
+      "id": "b9",
+      "name": "Whole Grain Bread",
+      "price": 90,
+      "tags": [
+        "Fiber Rich"
+      ],
+      "desc": "Dense, nutrient-dense whole wheat grain loaf. Fresh, earthy, and satisfying.",
+      "image": "https://images.unsplash.com/photo-1565181152879-bc96b4ccfd69?w=600&q=80",
+      "inStock": true
+    }
+  ],
+  "addons": [
+    {
+      "id": "bu1",
+      "name": "Almond Butter (Creamy Crunchy)",
+      "price": 40,
+      "tags": [
+        "Healthy Fats"
+      ],
+      "image": "https://images.unsplash.com/photo-1612459284970-e8f027596582?w=300&q=80",
+      "category": "Spreads & Sweeteners",
+      "inStock": true
+    },
+    {
+      "id": "bu2",
+      "name": "Dark Chocolate Peanut Butter",
+      "price": 45,
+      "tags": [
+        "Healthy Fats",
+        "High Protein"
+      ],
+      "image": "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=300&q=80",
+      "category": "Spreads & Sweeteners",
+      "inStock": true
+    },
+    {
+      "id": "bu3",
+      "name": "Peanut Butter",
+      "price": 35,
+      "tags": [
+        "Healthy Fats",
+        "High Protein"
+      ],
+      "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=80",
+      "category": "Spreads & Sweeteners",
+      "inStock": true
+    },
+    {
+      "id": "bu4",
+      "name": "Honey",
+      "price": 20,
+      "tags": [],
+      "image": "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&q=80",
+      "category": "Spreads & Sweeteners",
+      "inStock": true
+    },
+    {
+      "id": "bu5",
+      "name": "Cinnamon",
+      "price": 15,
+      "tags": [],
+      "image": "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&q=80",
+      "category": "Spreads & Sweeteners",
+      "inStock": true
+    },
+    {
+      "id": "f1",
+      "name": "Apple",
+      "price": 20,
+      "tags": [
+        "Fresh Fruits"
+      ],
+      "image": "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&q=80",
+      "category": "Fresh Fruits",
+      "inStock": true
+    },
+    {
+      "id": "f2",
+      "name": "Banana",
+      "price": 15,
+      "tags": [
+        "Fresh Fruits"
+      ],
+      "image": "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300&q=80",
+      "category": "Fresh Fruits",
+      "inStock": true
+    },
+    {
+      "id": "f3",
+      "name": "Blueberry",
+      "price": 35,
+      "tags": [
+        "Fresh Fruits"
+      ],
+      "image": "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?w=300&q=80",
+      "category": "Fresh Fruits",
+      "inStock": true
+    },
+    {
+      "id": "f4",
+      "name": "Dragon Fruit",
+      "price": 50,
+      "tags": [
+        "Fresh Fruits"
+      ],
+      "image": "https://images.unsplash.com/photo-1527325678964-54921661f888?w=300&q=80",
+      "category": "Fresh Fruits",
+      "inStock": true
+    },
+    {
+      "id": "f5",
+      "name": "Grapes",
+      "price": 25,
+      "tags": [
+        "Fresh Fruits"
+      ],
+      "image": "https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=300&q=80",
+      "category": "Fresh Fruits",
+      "inStock": true
+    },
+    {
+      "id": "f6",
+      "name": "Mango",
+      "price": 30,
+      "tags": [
+        "Fresh Fruits"
+      ],
+      "image": "https://images.unsplash.com/photo-1553279768-865429fa0078?w=300&q=80",
+      "category": "Fresh Fruits",
+      "inStock": true
+    },
+    {
+      "id": "f7",
+      "name": "Muskmelon",
+      "price": 25,
+      "tags": [
+        "Fresh Fruits"
+      ],
+      "image": "https://images.unsplash.com/photo-1571575309168-a4ad8e4e30f4?w=300&q=80",
+      "category": "Fresh Fruits",
+      "inStock": true
+    },
+    {
+      "id": "f8",
+      "name": "Mulberries",
+      "price": 40,
+      "tags": [
+        "Fresh Fruits"
+      ],
+      "image": "https://images.unsplash.com/photo-1559734840-f9509ee5677f?w=300&q=80",
+      "category": "Fresh Fruits",
+      "inStock": true
+    },
+    {
+      "id": "f9",
+      "name": "Pomegranate",
+      "price": 35,
+      "tags": [
+        "Fresh Fruits"
+      ],
+      "image": "https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=300&q=80",
+      "category": "Fresh Fruits",
+      "inStock": true
+    },
+    {
+      "id": "f10",
+      "name": "Raspberries",
+      "price": 45,
+      "tags": [
+        "Fresh Fruits"
+      ],
+      "image": "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=300&q=80",
+      "category": "Fresh Fruits",
+      "inStock": true
+    },
+    {
+      "id": "f11",
+      "name": "Strawberry",
+      "price": 40,
+      "tags": [
+        "Fresh Fruits"
+      ],
+      "image": "https://images.unsplash.com/photo-1543158181-e6f9f6712055?w=300&q=80",
+      "category": "Fresh Fruits",
+      "inStock": true
+    },
+    {
+      "id": "n1",
+      "name": "All Mix Nuts",
+      "price": 50,
+      "tags": [
+        "Healthy Fats",
+        "High Protein"
+      ],
+      "image": "https://images.unsplash.com/photo-1571236252609-e6e0e3b25254?w=300&q=80",
+      "category": "Premium Nuts",
+      "inStock": true
+    },
+    {
+      "id": "n2",
+      "name": "Almonds",
+      "price": 40,
+      "tags": [
+        "Healthy Fats"
+      ],
+      "image": "https://images.unsplash.com/photo-1574570173583-e0a7a5e39f5e?w=300&q=80",
+      "category": "Premium Nuts",
+      "inStock": true
+    },
+    {
+      "id": "n3",
+      "name": "Black Raisins",
+      "price": 30,
+      "tags": [],
+      "image": "https://images.unsplash.com/photo-1596591868231-05e808fd3b44?w=300&q=80",
+      "category": "Premium Nuts",
+      "inStock": true
+    },
+    {
+      "id": "n4",
+      "name": "Cashews",
+      "price": 45,
+      "tags": [
+        "Healthy Fats"
+      ],
+      "image": "https://images.unsplash.com/photo-1567892737950-30c366a89102?w=300&q=80",
+      "category": "Premium Nuts",
+      "inStock": true
+    },
+    {
+      "id": "n5",
+      "name": "Cranberries",
+      "price": 35,
+      "tags": [],
+      "image": "https://images.unsplash.com/photo-1562157873-818bc0726f68?w=300&q=80",
+      "category": "Premium Nuts",
+      "inStock": true
+    },
+    {
+      "id": "n6",
+      "name": "Dates",
+      "price": 30,
+      "tags": [],
+      "image": "https://images.unsplash.com/photo-1600189020440-5a5ff59a2a39?w=300&q=80",
+      "category": "Premium Nuts",
+      "inStock": true
+    },
+    {
+      "id": "n7",
+      "name": "Green Raisin",
+      "price": 30,
+      "tags": [],
+      "image": "https://images.unsplash.com/photo-1596591868231-05e808fd3b44?w=300&q=80",
+      "category": "Premium Nuts",
+      "inStock": true
+    },
+    {
+      "id": "n8",
+      "name": "Hazel Nuts",
+      "price": 50,
+      "tags": [
+        "Healthy Fats"
+      ],
+      "image": "https://images.unsplash.com/photo-1574570173583-e0a7a5e39f5e?w=300&q=80",
+      "category": "Premium Nuts",
+      "inStock": true
+    },
+    {
+      "id": "n9",
+      "name": "Peanuts",
+      "price": 25,
+      "tags": [
+        "High Protein"
+      ],
+      "image": "https://images.unsplash.com/photo-1567567379834-1e4ea7eecb01?w=300&q=80",
+      "category": "Premium Nuts",
+      "inStock": true
+    },
+    {
+      "id": "n10",
+      "name": "Walnuts",
+      "price": 45,
+      "tags": [
+        "Healthy Fats"
+      ],
+      "image": "https://images.unsplash.com/photo-1611238573218-4efea4f4accd?w=300&q=80",
+      "category": "Premium Nuts",
+      "inStock": true
+    },
+    {
+      "id": "s1",
+      "name": "Chia Seeds",
+      "price": 25,
+      "tags": [
+        "Fiber Rich"
+      ],
+      "image": "https://images.unsplash.com/photo-1609246397806-36b3cdb7e71e?w=300&q=80",
+      "category": "Healthy Seeds",
+      "inStock": true
+    },
+    {
+      "id": "s2",
+      "name": "Pumpkin Seeds",
+      "price": 30,
+      "tags": [
+        "Healthy Fats"
+      ],
+      "image": "https://images.unsplash.com/photo-1596593046893-a4c5a0ef8f09?w=300&q=80",
+      "category": "Healthy Seeds",
+      "inStock": true
+    },
+    {
+      "id": "s3",
+      "name": "Sunflower Seeds",
+      "price": 25,
+      "tags": [
+        "Healthy Fats"
+      ],
+      "image": "https://images.unsplash.com/photo-1503027572-46cbe74e49eb?w=300&q=80",
+      "category": "Healthy Seeds",
+      "inStock": true
+    },
+    {
+      "id": "s4",
+      "name": "Watermelon Seeds",
+      "price": 20,
+      "tags": [],
+      "image": "https://images.unsplash.com/photo-1582655008695-a1db8c59b9bb?w=300&q=80",
+      "category": "Healthy Seeds",
+      "inStock": true
+    }
+  ],
+  "combos": [
+    {
+      "id": "c1",
+      "name": "The Power Bowl",
+      "base": "High Protein Oats Chocolate",
+      "addons": [
+        "Almonds",
+        "Peanut Butter",
+        "Banana"
+      ],
+      "price": 235,
+      "image": "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400&q=80",
+      "tag": "Best for Gym",
+      "inStock": true
+    },
+    {
+      "id": "c2",
+      "name": "The Fruit Paradise",
+      "base": "Fruit Oats",
+      "addons": [
+        "Strawberry",
+        "Blueberry",
+        "Mango"
+      ],
+      "price": 195,
+      "image": "https://images.unsplash.com/photo-1614961909372-5e11b6a0ae54?w=400&q=80",
+      "tag": "Vitamins Rich",
+      "inStock": true
+    },
+    {
+      "id": "c3",
+      "name": "The Nut Crunch",
+      "base": "Muesli",
+      "addons": [
+        "All Mix Nuts",
+        "Dark Chocolate Peanut Butter",
+        "Chia Seeds"
+      ],
+      "price": 250,
+      "image": "https://images.unsplash.com/photo-1504308805006-0f7a5f1adea4?w=400&q=80",
+      "tag": "High Energy",
+      "inStock": true
+    }
+  ]
+}

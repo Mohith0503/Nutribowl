@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body {
+    margin: 0;
+    height: 100%;
+    overflow-x: hidden;
+    @apply antialiased bg-theoh-beige text-theoh-text;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Premium scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-theoh-beige;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-theoh-border rounded-full hover:bg-theoh-muted/40 transition-colors;
+  }
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 253, 249, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.glass-dark {
+  background: rgba(92, 61, 32, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

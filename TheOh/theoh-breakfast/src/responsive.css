@@ -1,0 +1,63 @@
+/* responsive.css - Mobile first adjustments */
+@media (max-width: 768px) {
+  /* Navigation */
+  nav div[style*="navInner"] {
+    flex-direction: column;
+    height: auto;
+    padding: 12px 20px;
+  }
+  nav div[style*="navLinks"] {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  /* Hero */
+  div[style*="hero"] {
+    min-height: 320px;
+    padding: 40px 20px;
+  }
+  h1[style*="heroH1"] {
+    font-size: clamp(24px, 6vw, 36px) !important;
+    text-align: center;
+  }
+  p[style*="heroSub"] {
+    font-size: 14px;
+    max-width: 100%;
+  }
+  button[style*="heroCta"], button[style*="heroCtaSecondary"] {
+    width: 100%;
+    margin-top: 12px;
+  }
+  /* Menu page */
+  div[style*="cartPage"] {
+    padding: 24px 12px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  div[style*="menuPage"] {
+    padding: 24px 12px 80px;
+  }
+  div[style*="itemGrid"] {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+  }
+  /* Cart bar */
+  div[style*="cartBar"] {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  /* Floating cart FAB */
+  button[style*="fab"] {
+    bottom: 12px;
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  /* Footer */
+  footer div[style*="footer"] {
+    text-align: center;
+    padding: 30px 15px;
+  }
+}
