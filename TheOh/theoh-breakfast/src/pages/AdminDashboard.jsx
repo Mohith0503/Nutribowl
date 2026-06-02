@@ -7,7 +7,7 @@ import {
   Plus, Edit2, Trash2, Check, X, Layers, Image, Sparkles,
   Bell, BellOff
 } from 'lucide-react';
-import { api } from '../services/api';
+import { api, SOCKET_URL } from '../services/api';
 import { formatINR } from '../utils/currency';
 import io from 'socket.io-client';
 
@@ -145,7 +145,7 @@ export function AdminDashboard({ onLogout }) {
     fetchData();
 
     // Establish WebSocket Connection
-    const socket = io('http://localhost:5000');
+    const socket = io(SOCKET_URL);
     
     socket.on('connect', () => {
       console.log('[WS] Connected to Server successfully');
