@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "npm run build --prefix Nutribowl/nutribowl-breakfast",
-  "installCommand": "npm install --prefix Nutribowl/nutribowl-breakfast",
-  "outputDirectory": "Nutribowl/nutribowl-breakfast/dist",
+  "buildCommand": "npm run build --prefix TheOh/theoh-breakfast",
+  "installCommand": "npm install --prefix TheOh/theoh-breakfast",
+  "outputDirectory": "TheOh/theoh-breakfast/dist",
   "rewrites": [
     {
       "source": "/(.*)",
