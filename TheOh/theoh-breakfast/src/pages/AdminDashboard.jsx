@@ -7,10 +7,10 @@ import {
   Plus, Edit2, Trash2, Check, X, Layers, Image, Sparkles,
   Bell, BellOff
 } from 'lucide-react';
-import { api, SOCKET_URL } from '../services/api';
+import { api } from '../services/api';
+import { supabase } from '../services/supabase';
 import { formatINR } from '../utils/currency';
 import { AdminSubscriptionsTab } from '../components/admin/AdminSubscriptionsTab';
-import io from 'socket.io-client';
 
 // Synthesise audio chime using Web Audio API (cross-browser, no asset load overhead)
 const playNotificationSound = () => {
@@ -141,80 +141,80 @@ export function AdminDashboard({ onLogout }) {
     }
   };
 
-  // Connect to WebSockets on mount
+  // Connect to Supabase Realtime on mount
   useEffect(() => {
     fetchData();
 
-    // Establish WebSocket Connection
-    const socket = io(SOCKET_URL);
-    
-    socket.on('connect', () => {
-      // Connected successfully
-    });
-
-    // Listen for new orders
-    socket.on('new_order', (newOrder) => {
-      // Play Audio Notification Chime
-      playNotificationSound();
-
-      // Spawn native OS desktop notification if permission is granted
-      if ('Notification' in window && Notification.permission === 'granted') {
-        try {
-          const desktopAlert = new Notification(`New Order: ${newOrder.id}`, {
-            body: `${newOrder.customer.name} - ${formatINR(newOrder.totalPrice)}\nSlot: ${newOrder.customer.timeSlot}`,
-            tag: newOrder.id,
-            requireInteraction: true // keep notification active until user clicks/dismisses
-          });
-          desktopAlert.onclick = () => {
-            window.focus();
-            desktopAlert.close();
-          };
-        } catch (e) {
-          console.warn("Failed to trigger browser desktop notification:", e);
-        }
-      }
-
-      // Spawn floating Alert
-      const alertId = `${Date.now()}-${Math.random()}`;
-      setAlerts(prev => [{ id: alertId, order: newOrder }, ...prev]);
-
-      // Prepend to orders list instantly
-      setOrders(prev => {
-        if (prev.some(o => o.id === newOrder.id)) return prev;
-        return [newOrder, ...prev];
-      });
-
-      // Update local quick stats widgets
-      setStats(prev => {
-        if (!prev) return prev;
-        return {
-          ...prev,
-          summary: {
-            ...prev.summary,
-            activeOrders: prev.summary.activeOrders + 1,
-            totalOrders: prev.summary.totalOrders + 1
-          }
+    // Subscribe to new orders via Supabase Realtime
+    const ordersChannel = supabase
+      .channel('orders-realtime')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'orders' }, (payload) => {
+        const newOrder = {
+          ...payload.new,
+          totalPrice: payload.new.total_price,
+          createdAt: payload.new.created_at
         };
-      });
 
-      // Auto-dismiss alert banner after 10 seconds
-      setTimeout(() => {
-        setAlerts(prev => prev.filter(a => a.id !== alertId));
-      }, 10000);
-    });
+        // Play Audio Notification Chime
+        playNotificationSound();
 
-    socket.on('order_status_updated', (updatedOrder) => {
-      setOrders(prev => prev.map(o => o.id === updatedOrder.id ? { ...o, status: updatedOrder.status } : o));
-      // Refresh analytics statistics quietly
-      api.fetchStats().then(s => setStats(s)).catch(console.error);
-    });
+        // Spawn native OS desktop notification if permission is granted
+        if ('Notification' in window && Notification.permission === 'granted') {
+          try {
+            const desktopAlert = new Notification(`New Order: ${newOrder.id}`, {
+              body: `${newOrder.customer.name} - ${formatINR(newOrder.totalPrice)}\nSlot: ${newOrder.customer.timeSlot}`,
+              tag: newOrder.id,
+              requireInteraction: true
+            });
+            desktopAlert.onclick = () => {
+              window.focus();
+              desktopAlert.close();
+            };
+          } catch (e) {
+            console.warn("Failed to trigger browser desktop notification:", e);
+          }
+        }
 
-    socket.on('menu_updated', () => {
-      loadMenu();
-    });
+        // Spawn floating Alert
+        const alertId = `${Date.now()}-${Math.random()}`;
+        setAlerts(prev => [{ id: alertId, order: newOrder }, ...prev]);
+
+        // Prepend to orders list instantly
+        setOrders(prev => {
+          if (prev.some(o => o.id === newOrder.id)) return prev;
+          return [newOrder, ...prev];
+        });
+
+        // Update local quick stats widgets
+        setStats(prev => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            summary: {
+              ...prev.summary,
+              activeOrders: prev.summary.activeOrders + 1,
+              totalOrders: prev.summary.totalOrders + 1
+            }
+          };
+        });
+
+        // Auto-dismiss alert banner after 10 seconds
+        setTimeout(() => {
+          setAlerts(prev => prev.filter(a => a.id !== alertId));
+        }, 10000);
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'orders' }, (payload) => {
+        const updatedOrder = { ...payload.new, totalPrice: payload.new.total_price };
+        setOrders(prev => prev.map(o => o.id === updatedOrder.id ? { ...o, status: updatedOrder.status } : o));
+        api.fetchStats().then(s => setStats(s)).catch(() => {});
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'menu_items' }, () => {
+        loadMenu();
+      })
+      .subscribe();
 
     return () => {
-      socket.disconnect();
+      supabase.removeChannel(ordersChannel);
     };
   }, []);
 
