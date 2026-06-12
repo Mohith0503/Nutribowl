@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, Pause, Play, X, Download, TrendingUp, 
   Calendar, Users, DollarSign, Package, ChevronDown, ChevronUp,
-  Clock, MapPin
+  Clock, MapPin, Check
 } from 'lucide-react';
 import { formatINR } from '../../utils/currency';
 
@@ -525,6 +525,16 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
                         title="Resume Subscription"
                       >
                         <Play size={14} />
+                      </button>
+                    ) : null}
+                    {sub.rawStatus === 'pending_whatsapp' ? (
+                      <button 
+                        onClick={() => handleResume(sub.id)} 
+                        className="p-2.5 rounded-xl bg-emerald-50 border border-[#004700]/30 text-emerald-700 hover:bg-emerald-100 transition-colors shadow-sm font-bold flex items-center gap-1" 
+                        title="Confirm & Activate Order"
+                      >
+                        <Check size={14} />
+                        <span className="text-[10px] uppercase font-sans tracking-wide pr-1">Confirm</span>
                       </button>
                     ) : null}
                     {sub.rawStatus !== 'canceled' && sub.rawStatus !== 'delivered' && (
