@@ -853,7 +853,7 @@ export function AdminDashboard({ onLogout }) {
 
             {/* Subscriptions Tab */}
             {activeTab === 'subscriptions' && (
-              <AdminSubscriptionsTab />
+              <AdminSubscriptionsTab orders={orders} onStatusChange={handleStatusChange} />
             )}
 
             {/* Menu Manager Tab */}
