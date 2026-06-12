@@ -42,49 +42,52 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
   const [selectedDay, setSelectedDay] = useState(null); // Click to filter orders active on a specific calendar day
   const [expandedId, setExpandedId] = useState(null);
 
-  // Map real database orders into subscriptions structure
+  // Map real database orders into subscriptions structure, filtering out 1-day plans
   const subscriptions = useMemo(() => {
-    return orders.map(order => {
-      const start = order.customer?.startDate || '';
-      const duration = order.plan?.duration || 1;
-      const end = (() => {
-        if (!start) return '';
-        const d = new Date(start);
-        d.setDate(d.getDate() + duration - 1);
-        return d.toISOString().split('T')[0];
-      })();
+    return orders
+      // FILTER: Only show 7-day and 30-day subscription plans (exclude 1-day/oneday pre-orders)
+      .filter(order => order.plan?.duration && order.plan.duration > 1)
+      .map(order => {
+        const start = order.customer?.startDate || '';
+        const duration = order.plan?.duration || 1;
+        const end = (() => {
+          if (!start) return '';
+          const d = new Date(start);
+          d.setDate(d.getDate() + duration - 1);
+          return d.toISOString().split('T')[0];
+        })();
 
-      const mealNames = order.items?.map(i => {
-        const baseName = i.base?.name || i.name || 'Custom Bowl';
-        return `${baseName} (x${i.qty})`;
-      }).join(', ') || 'No items';
+        const mealNames = order.items?.map(i => {
+          const baseName = i.base?.name || i.name || 'Custom Bowl';
+          return `${baseName} (x${i.qty})`;
+        }).join(', ') || 'No items';
 
-      // Map Supabase status to subscription display status
-      let displayStatus = 'active';
-      if (order.status === 'paused') displayStatus = 'paused';
-      else if (order.status === 'canceled') displayStatus = 'cancelled';
-      else if (order.status === 'delivered') displayStatus = 'completed';
-      else if (order.status === 'pending_whatsapp') displayStatus = 'pending';
+        // Map Supabase status to subscription display status
+        let displayStatus = 'active';
+        if (order.status === 'paused') displayStatus = 'paused';
+        else if (order.status === 'canceled') displayStatus = 'cancelled';
+        else if (order.status === 'delivered') displayStatus = 'completed';
+        else if (order.status === 'pending_whatsapp') displayStatus = 'pending';
 
-      return {
-        id: order.id,
-        customerName: order.customer?.name || 'Unknown',
-        phone: order.customer?.phone || '',
-        address: order.customer?.address || '',
-        timeSlot: order.customer?.timeSlot || '',
-        notes: order.customer?.notes || '',
-        planName: order.plan?.name || `${duration} Day Plan`,
-        planId: order.plan?.id || 'oneday',
-        meal: mealNames,
-        startDate: start,
-        endDate: end,
-        status: displayStatus,
-        rawStatus: order.status,
-        price: order.total_price || 0,
-        qty: order.items?.reduce((sum, item) => sum + item.qty, 0) || 1,
-        createdAt: order.created_at || ''
-      };
-    });
+        return {
+          id: order.id,
+          customerName: order.customer?.name || 'Unknown',
+          phone: order.customer?.phone || '',
+          address: order.customer?.address || '',
+          timeSlot: order.customer?.timeSlot || '',
+          notes: order.customer?.notes || '',
+          planName: order.plan?.name || `${duration} Day Plan`,
+          planId: order.plan?.id || 'oneday',
+          meal: mealNames,
+          startDate: start,
+          endDate: end,
+          status: displayStatus,
+          rawStatus: order.status,
+          price: order.total_price || 0,
+          qty: order.items?.reduce((sum, item) => sum + item.qty, 0) || 1,
+          createdAt: order.created_at || ''
+        };
+      });
   }, [orders]);
 
   // Filtered List based on search, status filter, date filter, and selected calendar day
@@ -112,6 +115,26 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
   const activeCount = useMemo(() => subscriptions.filter(s => s.status === 'active').length, [subscriptions]);
   const pausedCount = useMemo(() => subscriptions.filter(s => s.status === 'paused').length, [subscriptions]);
   const totalRevenue = useMemo(() => subscriptions.filter(s => s.status !== 'cancelled' && s.status !== 'pending').reduce((sum, s) => sum + s.price, 0), [subscriptions]);
+
+  // New Statistic: Total active 30-day plans
+  const active30DayCount = useMemo(() => {
+    return subscriptions.filter(s => 
+      s.status === 'active' && 
+      (s.planId === 'monthly' || s.planId === 'plan_monthly')
+    ).length;
+  }, [subscriptions]);
+
+  // New Statistic: Tomorrow's Scheduled Deliveries
+  const tomorrowsCount = useMemo(() => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowStr = tomorrow.toISOString().split('T')[0];
+
+    return subscriptions.filter(s => {
+      if (s.status !== 'active') return false;
+      return tomorrowStr >= s.startDate && tomorrowStr <= s.endDate;
+    }).length;
+  }, [subscriptions]);
 
   const mrr = useMemo(() => {
     return subscriptions
@@ -195,42 +218,60 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
   return (
     <div className="space-y-6">
       
-      {/* Analytics widgets */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        <div className="bg-white p-6 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
+      {/* Analytics widgets grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-5">
+        <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-nutribowl-muted uppercase tracking-wider">Estimated MRR</p>
-            <h3 className="text-2xl font-black text-[#004700] mt-1">{formatINR(Math.round(mrr))}</h3>
+            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider">Estimated MRR</p>
+            <h3 className="text-xl font-black text-[#004700] mt-1">{formatINR(Math.round(mrr))}</h3>
           </div>
-          <div className="bg-[#E8F5E9] text-[#004700] p-3 rounded-2xl">
-            <TrendingUp size={20} />
+          <div className="bg-[#E8F5E9] text-[#004700] p-2.5 rounded-2xl flex-shrink-0">
+            <TrendingUp size={18} />
           </div>
         </div>
-        <div className="bg-white p-6 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-nutribowl-muted uppercase tracking-wider">Active Subscriptions</p>
-            <h3 className="text-2xl font-black text-nutribowl-brown mt-1">{activeCount}</h3>
+            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider">Active Subs (7D & 30D)</p>
+            <h3 className="text-xl font-black text-nutribowl-brown mt-1">{activeCount}</h3>
           </div>
-          <div className="bg-emerald-50 text-emerald-600 p-3 rounded-2xl">
-            <Users size={20} />
+          <div className="bg-emerald-50 text-emerald-600 p-2.5 rounded-2xl flex-shrink-0">
+            <Users size={18} />
           </div>
         </div>
-        <div className="bg-white p-6 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-nutribowl-muted uppercase tracking-wider">Paused Subscriptions</p>
-            <h3 className="text-2xl font-black text-amber-600 mt-1">{pausedCount}</h3>
+            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider">Active 30-Day Plans</p>
+            <h3 className="text-xl font-black text-indigo-700 mt-1">{active30DayCount}</h3>
           </div>
-          <div className="bg-amber-50 text-amber-600 p-3 rounded-2xl">
-            <Pause size={20} />
+          <div className="bg-indigo-50 text-indigo-700 p-2.5 rounded-2xl flex-shrink-0">
+            <Package size={18} />
           </div>
         </div>
-        <div className="bg-white p-6 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
+        <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-xs font-bold text-nutribowl-muted uppercase tracking-wider">Total Active Revenue</p>
-            <h3 className="text-2xl font-black text-nutribowl-brown mt-1">{formatINR(totalRevenue)}</h3>
+            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider">Tomorrow's Deliveries</p>
+            <h3 className="text-xl font-black text-amber-700 mt-1">{tomorrowsCount}</h3>
           </div>
-          <div className="bg-indigo-50 text-indigo-600 p-3 rounded-2xl">
-            <DollarSign size={20} />
+          <div className="bg-amber-50 text-amber-650 p-2.5 rounded-2xl flex-shrink-0">
+            <Clock size={18} />
+          </div>
+        </div>
+        <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
+          <div>
+            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider font-sans">Paused Subs</p>
+            <h3 className="text-xl font-black text-amber-600 mt-1">{pausedCount}</h3>
+          </div>
+          <div className="bg-amber-50 text-amber-600 p-2.5 rounded-2xl flex-shrink-0">
+            <Pause size={18} />
+          </div>
+        </div>
+        <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
+          <div>
+            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider">Total Active Revenue</p>
+            <h3 className="text-xl font-black text-nutribowl-brown mt-1">{formatINR(totalRevenue)}</h3>
+          </div>
+          <div className="bg-indigo-50 text-indigo-600 p-2.5 rounded-2xl flex-shrink-0">
+            <DollarSign size={18} />
           </div>
         </div>
       </div>
@@ -434,7 +475,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
                 </div>
               </div>
 
-              {/* Expandable delivery details panel */}
+              {/* Expandable details panel */}
               <AnimatePresence>
                 {expandedId === sub.id && (
                   <motion.div
