@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, Pause, Play, X, Download, TrendingUp, 
   Calendar, Users, DollarSign, Package, ChevronDown, ChevronUp,
-  Clock, MapPin, CheckCircle
+  Clock, MapPin
 } from 'lucide-react';
 import { formatINR } from '../../utils/currency';
 
@@ -124,17 +124,34 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
     ).length;
   }, [subscriptions]);
 
-  // New Statistic: Tomorrow's Scheduled Deliveries
-  const tomorrowsCount = useMemo(() => {
+  // New Statistic: Tomorrow's Scheduled Deliveries Breakdown (Includes 1D, 7D, 30D from ALL orders)
+  const tomorrowsStats = useMemo(() => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     const tomorrowStr = tomorrow.toISOString().split('T')[0];
 
-    return subscriptions.filter(s => {
-      if (s.status !== 'active') return false;
-      return tomorrowStr >= s.startDate && tomorrowStr <= s.endDate;
-    }).length;
-  }, [subscriptions]);
+    const activeForTomorrow = orders.filter(order => {
+      const isActive = order.status === 'confirmed' || order.status === 'preparing' || order.status === 'out_for_delivery';
+      if (!isActive) return false;
+
+      const start = order.customer?.startDate;
+      if (!start) return false;
+
+      const duration = order.plan?.duration || 1;
+      const end = new Date(start);
+      end.setDate(end.getDate() + duration - 1);
+      const endDateStr = end.toISOString().split('T')[0];
+
+      return tomorrowStr >= start && tomorrowStr <= endDateStr;
+    });
+
+    return {
+      total: activeForTomorrow.length,
+      count1D: activeForTomorrow.filter(o => (o.plan?.duration || 1) === 1).length,
+      count7D: activeForTomorrow.filter(o => o.plan?.duration === 7).length,
+      count30D: activeForTomorrow.filter(o => o.plan?.duration === 30).length
+    };
+  }, [orders]);
 
   const mrr = useMemo(() => {
     return subscriptions
@@ -149,26 +166,46 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
       }, 0);
   }, [subscriptions]);
 
-  // Generate delivery matrix for the next 7 days
+  // Generate delivery matrix for the next 7 days (Includes 1-day pre-orders from ALL orders)
   const upcomingDeliveries = useMemo(() => {
     const today = new Date();
     const deliveries = [];
     for (let i = 0; i < 7; i++) {
       const date = new Date(today.getTime() + i * 86400000);
       const dateStr = date.toISOString().split('T')[0];
-      const subsForDay = subscriptions.filter(s => {
-        if (s.status !== 'active') return false;
-        return dateStr >= s.startDate && dateStr <= s.endDate;
+      
+      // Filter ALL orders (including 1-day plans) that are active on this date
+      const activeForDay = orders.filter(order => {
+        const isActive = order.status === 'confirmed' || order.status === 'preparing' || order.status === 'out_for_delivery';
+        if (!isActive) return false;
+
+        const start = order.customer?.startDate;
+        if (!start) return false;
+
+        const duration = order.plan?.duration || 1;
+        const end = new Date(start);
+        end.setDate(end.getDate() + duration - 1);
+        const endDateStr = end.toISOString().split('T')[0];
+
+        return dateStr >= start && dateStr <= endDateStr;
       });
+
+      const count1D = activeForDay.filter(o => (o.plan?.duration || 1) === 1).length;
+      const count7D = activeForDay.filter(o => o.plan?.duration === 7).length;
+      const count30D = activeForDay.filter(o => o.plan?.duration === 30).length;
+
       deliveries.push({
         date: dateStr,
         dayName: date.toLocaleDateString('en-IN', { weekday: 'short' }),
         dayNum: date.getDate(),
-        count: subsForDay.length
+        count: activeForDay.length,
+        count1D,
+        count7D,
+        count30D
       });
     }
     return deliveries;
-  }, [subscriptions]);
+  }, [orders]);
 
   // Database updates
   const handlePause = async (id) => {
@@ -231,14 +268,14 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
         </div>
         <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider">Active Subs (7D & 30D)</p>
+            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider font-sans">Active Subs (7D & 30D)</p>
             <h3 className="text-xl font-black text-nutribowl-brown mt-1">{activeCount}</h3>
           </div>
           <div className="bg-emerald-50 text-emerald-600 p-2.5 rounded-2xl flex-shrink-0">
             <Users size={18} />
           </div>
         </div>
-        <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
+        <div className="bg-white/95 p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
           <div>
             <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider">Active 30-Day Plans</p>
             <h3 className="text-xl font-black text-indigo-700 mt-1">{active30DayCount}</h3>
@@ -247,15 +284,27 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
             <Package size={18} />
           </div>
         </div>
-        <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
-          <div>
-            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider">Tomorrow's Deliveries</p>
-            <h3 className="text-xl font-black text-amber-700 mt-1">{tomorrowsCount}</h3>
+        
+        {/* Tomorrow's Deliveries Card with Plan breakdown */}
+        <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex flex-col justify-between min-h-[90px]">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider">Tomorrow's Deliveries</p>
+              <h3 className="text-xl font-black text-amber-700 mt-1">{tomorrowsStats.total}</h3>
+            </div>
+            <div className="bg-amber-50 text-amber-600 p-2.5 rounded-2xl flex-shrink-0">
+              <Clock size={18} />
+            </div>
           </div>
-          <div className="bg-amber-50 text-amber-650 p-2.5 rounded-2xl flex-shrink-0">
-            <Clock size={18} />
+          <div className="mt-3 pt-1.5 border-t border-nutribowl-border/20 flex gap-2 text-[8px] font-black text-nutribowl-muted uppercase tracking-wider justify-between">
+            <span className="text-blue-600">1D: {tomorrowsStats.count1D}</span>
+            <span>·</span>
+            <span className="text-emerald-600">7D: {tomorrowsStats.count7D}</span>
+            <span>·</span>
+            <span className="text-indigo-600">30D: {tomorrowsStats.count30D}</span>
           </div>
         </div>
+        
         <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
           <div>
             <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider font-sans">Paused Subs</p>
@@ -267,7 +316,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
         </div>
         <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider">Total Active Revenue</p>
+            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider font-sans">Total Active Rev</p>
             <h3 className="text-xl font-black text-nutribowl-brown mt-1">{formatINR(totalRevenue)}</h3>
           </div>
           <div className="bg-indigo-50 text-indigo-600 p-2.5 rounded-2xl flex-shrink-0">
@@ -281,7 +330,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
         <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-5 border-b border-nutribowl-border/25 pb-3">
           <div className="flex items-center gap-2">
             <Calendar size={18} className="text-[#004700]" />
-            <h4 className="font-black text-base text-nutribowl-brown uppercase">Delivery Tracker (Next 7 Days)</h4>
+            <h4 className="font-black text-base text-nutribowl-brown uppercase font-sans">Delivery Tracker (Next 7 Days)</h4>
           </div>
           {selectedDay && (
             <button 
@@ -297,6 +346,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
           💡 Click on any day to see exactly which active subscriptions require delivery on that date.
         </p>
 
+        {/* 7 Day Delivery Grid with exact plan type breakdowns */}
         <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3">
           {upcomingDeliveries.map((d) => {
             const isSelected = selectedDay === d.date;
@@ -305,16 +355,39 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
                 key={d.date}
                 type="button"
                 onClick={() => setSelectedDay(isSelected ? null : d.date)}
-                className={`text-center p-4 rounded-2xl border transition-all active:scale-95 flex flex-col items-center ${
+                className={`text-center p-4 rounded-2xl border transition-all active:scale-95 flex flex-col items-center justify-between min-h-[145px] ${
                   isSelected 
                     ? 'bg-[#004700] border-[#004700] text-white shadow-md' 
                     : 'bg-nutribowl-beige/40 border-nutribowl-border/30 text-nutribowl-brown hover:border-[#004700]/30 hover:bg-white'
                 }`}
               >
-                <span className={`text-[10px] uppercase font-bold tracking-wider ${isSelected ? 'text-green-200' : 'text-nutribowl-muted'}`}>{d.dayName}</span>
-                <span className={`text-xs font-black mt-0.5 ${isSelected ? 'text-white' : 'text-nutribowl-brown'}`}>{d.dayNum}</span>
-                <span className={`text-2xl font-black mt-2 ${isSelected ? 'text-white' : 'text-[#004700]'}`}>{d.count}</span>
-                <span className={`text-[9px] uppercase font-bold tracking-wider mt-1 ${isSelected ? 'text-green-200' : 'text-nutribowl-muted'}`}>deliveries</span>
+                <div className="w-full">
+                  <p className={`text-[10px] uppercase font-bold tracking-wider ${isSelected ? 'text-green-200' : 'text-nutribowl-muted'}`}>{d.dayName}</p>
+                  <p className={`text-xs font-semibold mt-0.5 ${isSelected ? 'text-white' : 'text-nutribowl-brown'}`}>{d.dayNum}</p>
+                </div>
+                
+                <div className="my-2">
+                  <p className={`text-3xl font-black leading-none ${isSelected ? 'text-white' : 'text-[#004700]'}`}>{d.count}</p>
+                  <p className={`text-[9px] uppercase font-bold tracking-wider mt-1.5 ${isSelected ? 'text-green-200' : 'text-nutribowl-muted'}`}>deliveries</p>
+                </div>
+
+                <div className="flex gap-1 w-full justify-center text-[8px] font-black uppercase tracking-tight mt-1">
+                  <span className={`px-1 py-0.5 rounded border ${
+                    isSelected 
+                      ? 'bg-white/10 border-white/20 text-white' 
+                      : 'bg-blue-50 border-blue-100 text-blue-700'
+                  }`} title="1-Day Deliveries">1D: {d.count1D}</span>
+                  <span className={`px-1 py-0.5 rounded border ${
+                    isSelected 
+                      ? 'bg-white/10 border-white/20 text-white' 
+                      : 'bg-emerald-50 border-emerald-100 text-emerald-700'
+                  }`} title="7-Day Deliveries">7D: {d.count7D}</span>
+                  <span className={`px-1 py-0.5 rounded border ${
+                    isSelected 
+                      ? 'bg-white/10 border-white/20 text-white' 
+                      : 'bg-indigo-50 border-indigo-100 text-indigo-700'
+                  }`} title="30-Day Deliveries">30D: {d.count30D}</span>
+                </div>
               </button>
             );
           })}
@@ -381,9 +454,9 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
       {selectedDay && (
         <div className="bg-[#E8F5E9]/50 border border-[#004700]/25 rounded-2xl p-4 flex items-center justify-between">
           <p className="text-xs text-[#004700] font-bold">
-            📍 Showing only subscriptions requiring delivery on <span className="font-black underline">{new Date(selectedDay).toLocaleDateString('en-IN', { dateStyle: 'medium' })}</span>
+            📍 Showing active 7D & 30D subscriptions requiring delivery on <span className="font-black underline">{new Date(selectedDay).toLocaleDateString('en-IN', { dateStyle: 'medium' })}</span>
           </p>
-          <button onClick={() => setSelectedDay(null)} className="text-xs font-black text-[#004700] hover:underline uppercase">Show All</button>
+          <button onClick={() => setSelectedDay(null)} className="text-xs font-black text-[#004700] hover:underline uppercase font-sans">Show All</button>
         </div>
       )}
 
