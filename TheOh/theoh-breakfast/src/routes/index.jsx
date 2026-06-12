@@ -8,10 +8,6 @@ import { Subscriptions } from '../pages/Subscriptions';
 import { MySubscriptions } from '../pages/MySubscriptions';
 import { Admin } from '../pages/Admin';
 import { MealDetails } from '../pages/MealDetails';
-import { ConfigureSubscription } from '../pages/ConfigureSubscription';
-import { OrderConfirmation } from '../pages/OrderConfirmation';
-import { Payment } from '../pages/Payment';
-import { Success } from '../pages/Success';
 
 export const router = createBrowserRouter([
   {
@@ -41,22 +37,6 @@ export const router = createBrowserRouter([
       {
         path: 'meal/:id',
         element: <MealDetails />,
-      },
-      {
-        path: 'checkout/configure',
-        element: <ConfigureSubscription />,
-      },
-      {
-        path: 'checkout/confirm',
-        element: <OrderConfirmation />,
-      },
-      {
-        path: 'checkout/payment',
-        element: <Payment />,
-      },
-      {
-        path: 'checkout/success',
-        element: <Success />,
       },
       {
         path: '*',

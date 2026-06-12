@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Info, CheckCircle2, Clock, Flame, Loader2 } from 'lucide-react';
-import { calculateSubscriptionPrice, SUBSCRIPTION_PLANS } from '../utils/pricing';
-import { useCheckout } from '../context/CheckoutContext';
+import { SUBSCRIPTION_PLANS } from '../utils/pricing';
 import { useMenu } from '../context/MenuContext';
+import { useCart } from '../context/CartContext';
 import { formatINR } from '../utils/currency';
 
 export function MealDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { updateMeal, updatePlan } = useCheckout();
+  const { addSubscriptionToCart, setIsCartOpen } = useCart();
   const { menu, isLoading } = useMenu();
   const [meal, setMeal] = useState(null);
 
@@ -31,16 +31,22 @@ export function MealDetails() {
   const handleSelectPlan = (planId) => {
     if (!meal) return;
     
-    // Save meal to checkout context
-    updateMeal(meal);
-    
-    // Calculate and save plan & totals
     const plan = SUBSCRIPTION_PLANS[planId];
-    const totals = calculateSubscriptionPrice(meal.price, planId, 1); // default qty 1
-    updatePlan(plan, totals);
-    
-    // Move to next step
-    navigate('/checkout/configure');
+    const duration = plan.duration || 1;
+    const basePrice = meal.price || 0;
+    const discountedDailyPrice = basePrice - Math.round(basePrice * (plan.discountPercentage / 100));
+
+    const dynamicPlan = {
+      ...plan,
+      durationDays: duration,
+      originalPrice: basePrice * duration,
+      discountedPrice: discountedDailyPrice * duration,
+      savings: (basePrice * duration) - (discountedDailyPrice * duration)
+    };
+
+    const tomorrowStr = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+    addSubscriptionToCart(dynamicPlan, meal, tomorrowStr, 1);
+    setIsCartOpen(true);
   };
 
   if (isLoading) {
