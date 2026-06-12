@@ -42,11 +42,9 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
   const [selectedDay, setSelectedDay] = useState(null); // Click to filter orders active on a specific calendar day
   const [expandedId, setExpandedId] = useState(null);
 
-  // Map real database orders into subscriptions structure, filtering out 1-day plans
+  // Map real database orders into subscriptions structure
   const subscriptions = useMemo(() => {
     return orders
-      // FILTER: Only show 7-day and 30-day subscription plans (exclude 1-day/oneday pre-orders)
-      .filter(order => order.plan?.duration && order.plan.duration > 1)
       .map(order => {
         const start = order.customer?.startDate || '';
         const duration = order.plan?.duration || 1;
@@ -155,14 +153,14 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
 
   const mrr = useMemo(() => {
     return subscriptions
-      .filter(s => s.status === 'active')
+      .filter(s => s.status === 'active' && s.planId !== 'oneday')
       .reduce((sum, s) => {
         const isMonthly = s.planId === 'monthly' || s.planId === 'plan_monthly';
         const isWeekly = s.planId === 'weekly' || s.planId === 'plan_weekly';
         
         if (isMonthly) return sum + s.price;
         if (isWeekly) return sum + (s.price * 4.3); // 7 days -> 30 days subtotal multiplier
-        return sum + (s.price * 30); // 1 day -> 30 days subtotal multiplier
+        return sum; // 1-day plan is excluded from MRR
       }, 0);
   }, [subscriptions]);
 
@@ -268,7 +266,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
         </div>
         <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
           <div>
-            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider font-sans">Active Subs (7D & 30D)</p>
+            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider font-sans">Active Orders (All)</p>
             <h3 className="text-xl font-black text-nutribowl-brown mt-1">{activeCount}</h3>
           </div>
           <div className="bg-emerald-50 text-emerald-600 p-2.5 rounded-2xl flex-shrink-0">
@@ -454,7 +452,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
       {selectedDay && (
         <div className="bg-[#E8F5E9]/50 border border-[#004700]/25 rounded-2xl p-4 flex items-center justify-between">
           <p className="text-xs text-[#004700] font-bold">
-            📍 Showing active 7D & 30D subscriptions requiring delivery on <span className="font-black underline">{new Date(selectedDay).toLocaleDateString('en-IN', { dateStyle: 'medium' })}</span>
+            📍 Showing active orders requiring delivery on <span className="font-black underline">{new Date(selectedDay).toLocaleDateString('en-IN', { dateStyle: 'medium' })}</span>
           </p>
           <button onClick={() => setSelectedDay(null)} className="text-xs font-black text-[#004700] hover:underline uppercase font-sans">Show All</button>
         </div>

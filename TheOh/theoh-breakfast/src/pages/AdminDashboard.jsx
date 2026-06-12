@@ -49,19 +49,14 @@ const playNotificationSound = () => {
 };
 
 export function AdminDashboard({ onLogout }) {
-  const [activeTab, setActiveTab] = useState('orders'); // 'orders', 'analytics', 'menu', 'subscriptions'
+  const [activeTab, setActiveTab] = useState('subscriptions'); // 'subscriptions', 'analytics', 'menu'
   const [orders, setOrders] = useState([]);
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [updatingId, setUpdatingId] = useState(null);
   const [error, setError] = useState('');
   
   // Real-time floating alerts state
   const [alerts, setAlerts] = useState([]);
-
-  // Orders Tab filters
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
 
   // Menu Manager states
   const [menuBases, setMenuBases] = useState([]);
@@ -219,7 +214,6 @@ export function AdminDashboard({ onLogout }) {
   }, []);
 
   const handleStatusChange = async (orderId, newStatus) => {
-    setUpdatingId(orderId);
     try {
       await api.updateOrderStatus(orderId, newStatus);
       setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
@@ -228,8 +222,6 @@ export function AdminDashboard({ onLogout }) {
       setStats(fetchedStats);
     } catch (err) {
       alert('Failed to update status: ' + err.message);
-    } finally {
-      setUpdatingId(null);
     }
   };
 
@@ -345,37 +337,6 @@ export function AdminDashboard({ onLogout }) {
       alert('Failed to save menu item: ' + err.message);
     }
   };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'pending':
-        return 'bg-amber-50 text-amber-700 border-amber-200';
-      case 'preparing':
-        return 'bg-blue-50 text-blue-700 border-blue-200';
-      case 'out_for_delivery':
-        return 'bg-indigo-50 text-indigo-700 border-indigo-200';
-      case 'delivered':
-        return 'bg-green-50 text-green-700 border-green-200';
-      case 'canceled':
-        return 'bg-red-50 text-red-700 border-red-200';
-      default:
-        return 'bg-gray-50 text-gray-700 border-gray-200';
-    }
-  };
-
-  const getStatusLabel = (status) => {
-    return status.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-  };
-
-  // Filter orders
-  const filteredOrders = orders.filter(order => {
-    const matchesStatus = statusFilter === 'all' || order.status === statusFilter;
-    const matchesSearch = 
-      order.customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.customer.phone.includes(searchTerm) ||
-      order.id.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesStatus && matchesSearch;
-  });
 
   // Filter menu lists based on menu search query
   const filteredMenuBases = menuBases.filter(b => 
@@ -511,14 +472,14 @@ export function AdminDashboard({ onLogout }) {
         {/* Tab Controls */}
         <div className="flex border-b border-nutribowl-border/50 mb-6 overflow-x-auto whitespace-nowrap scrollbar-hide">
           <button
-            onClick={() => setActiveTab('orders')}
+            onClick={() => setActiveTab('subscriptions')}
             className={`py-3 px-6 font-bold text-sm tracking-wide border-b-2 transition-all uppercase shrink-0 ${
-              activeTab === 'orders' 
+              activeTab === 'subscriptions' 
                 ? 'border-[#004700] text-[#004700]' 
                 : 'border-transparent text-nutribowl-muted hover:text-nutribowl-brown'
             }`}
           >
-            Orders Manager ({filteredOrders.length})
+            Subscriptions
           </button>
           <button
             onClick={() => setActiveTab('analytics')}
@@ -540,16 +501,6 @@ export function AdminDashboard({ onLogout }) {
           >
             Menu Manager
           </button>
-          <button
-            onClick={() => setActiveTab('subscriptions')}
-            className={`py-3 px-6 font-bold text-sm tracking-wide border-b-2 transition-all uppercase shrink-0 ${
-              activeTab === 'subscriptions' 
-                ? 'border-[#004700] text-[#004700]' 
-                : 'border-transparent text-nutribowl-muted hover:text-nutribowl-brown'
-            }`}
-          >
-            Subscriptions
-          </button>
         </div>
 
         {/* Error Notice */}
@@ -568,184 +519,6 @@ export function AdminDashboard({ onLogout }) {
           </div>
         ) : (
           <>
-            {/* Orders Tab */}
-            {activeTab === 'orders' && (
-              <div className="space-y-6">
-                
-                {/* Search and Filter Panel */}
-                <div className="bg-white p-4 rounded-3xl border border-nutribowl-border/40 shadow-sm flex flex-col md:flex-row gap-4 justify-between items-center">
-                  
-                  {/* Search */}
-                  <div className="relative w-full md:max-w-xs">
-                    <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-nutribowl-muted">
-                      <Search size={16} />
-                    </span>
-                    <input
-                      type="text"
-                      placeholder="Search Order ID, Name, Phone..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2.5 rounded-2xl border border-nutribowl-border bg-white text-sm outline-none focus:border-[#004700] focus:ring-1 focus:ring-[#E8F5E9]"
-                    />
-                  </div>
-
-                  {/* Filters */}
-                  <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                    <span className="text-xs font-bold text-nutribowl-muted flex items-center gap-1 mr-1 uppercase">
-                      <Filter size={12} />
-                      Filter Status:
-                    </span>
-                    {['all', 'pending', 'preparing', 'out_for_delivery', 'delivered', 'canceled'].map((status) => (
-                      <button
-                        key={status}
-                        onClick={() => setStatusFilter(status)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold border capitalize transition-all ${
-                          statusFilter === status 
-                            ? 'bg-[#004700] border-[#004700] text-white shadow-sm' 
-                            : 'bg-white border-nutribowl-border text-nutribowl-brown hover:border-nutribowl-orange/30'
-                        }`}
-                      >
-                        {status.replace(/_/g, ' ')}
-                      </button>
-                    ))}
-                  </div>
-
-                </div>
-
-                {/* Orders List Grid */}
-                {filteredOrders.length === 0 ? (
-                  <div className="bg-white rounded-3xl p-16 border border-nutribowl-border/40 text-center">
-                    <ShoppingBag className="mx-auto text-nutribowl-muted mb-4" size={40} />
-                    <h4 className="font-black text-lg text-nutribowl-brown">No orders found</h4>
-                    <p className="text-sm text-nutribowl-muted mt-1">Try adjusting your filters or search terms.</p>
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {filteredOrders.map((order) => (
-                      <div 
-                        key={order.id}
-                        className={`bg-white rounded-3xl border shadow-sm p-6 flex flex-col justify-between transition-all hover:shadow-md ${
-                          order.status === 'pending' ? 'border-l-4 border-l-amber-500 border-nutribowl-border/50' : 'border-nutribowl-border/50'
-                        }`}
-                      >
-                        <div>
-                          {/* Order Header */}
-                          <div className="flex justify-between items-start gap-2 border-b border-nutribowl-border/20 pb-4 mb-4">
-                            <div>
-                              <span className="text-xs font-bold text-nutribowl-muted uppercase tracking-wider">Order</span>
-                              <h4 className="font-black text-nutribowl-brown text-lg">{order.id}</h4>
-                              <p className="text-[11px] font-semibold text-nutribowl-muted mt-0.5">
-                                {new Date(order.createdAt).toLocaleString('en-IN', {
-                                  dateStyle: 'medium',
-                                  timeStyle: 'short'
-                                })}
-                              </p>
-                            </div>
-
-                            <div className="flex flex-col items-end gap-2">
-                              {/* Status Pill */}
-                              <span className={`px-3 py-1 rounded-full text-xs font-bold border uppercase ${getStatusColor(order.status)}`}>
-                                {getStatusLabel(order.status)}
-                              </span>
-
-                              {/* Quick Status Updater */}
-                              <select
-                                value={order.status}
-                                disabled={updatingId === order.id}
-                                onChange={(e) => handleStatusChange(order.id, e.target.value)}
-                                className="text-xs font-bold bg-nutribowl-beige border border-nutribowl-border text-nutribowl-brown px-2.5 py-1.5 rounded-xl outline-none focus:border-[#004700] disabled:opacity-50"
-                              >
-                                <option value="pending">Set Pending</option>
-                                <option value="preparing">Set Preparing</option>
-                                <option value="out_for_delivery">Set Out for Delivery</option>
-                                <option value="delivered">Set Delivered</option>
-                                <option value="canceled">Set Canceled</option>
-                              </select>
-                            </div>
-                          </div>
-
-                          {/* Customer Information */}
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4 bg-nutribowl-beige/25 p-4 rounded-2xl border border-nutribowl-border/30 text-xs">
-                            <div className="space-y-1.5">
-                              <p className="font-bold text-nutribowl-muted uppercase tracking-wider text-[10px]">Customer Details</p>
-                              <p className="font-black text-nutribowl-brown text-sm">{order.customer.name}</p>
-                              <div className="flex items-center gap-2 mt-1">
-                                <a 
-                                  href={`tel:${order.customer.phone}`}
-                                  className="flex items-center gap-1 font-bold text-blue-600 hover:underline"
-                                >
-                                  <Phone size={11} />
-                                  <span>{order.customer.phone}</span>
-                                </a>
-                                <a 
-                                  href={`https://wa.me/${order.customer.phone}`}
-                                  target="_blank"
-                                  className="flex items-center gap-1 font-bold text-green-600 hover:underline"
-                                >
-                                  <MessageCircle size={11} />
-                                  <span>WhatsApp</span>
-                                </a>
-                              </div>
-                            </div>
-
-                            <div className="space-y-1">
-                              <p className="font-bold text-nutribowl-muted uppercase tracking-wider text-[10px]">Preferred Time & Location</p>
-                              <p className="font-bold text-nutribowl-brown flex items-center gap-1">
-                                <Clock size={11} className="text-nutribowl-orange" />
-                                <span>{order.customer.timeSlot}</span>
-                              </p>
-                              <p className="text-nutribowl-muted leading-relaxed font-medium mt-0.5">{order.customer.address}</p>
-                            </div>
-                          </div>
-
-                          {/* Order Items */}
-                          <div className="space-y-3 mb-4">
-                            <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider">Ordered Items</p>
-                            {order.items.map((item, idx) => (
-                              <div key={idx} className="bg-white p-3 rounded-xl border border-nutribowl-border/30 text-sm">
-                                <div className="flex justify-between items-center">
-                                  <span className="font-bold text-nutribowl-brown">
-                                    {item.base?.name || 'Custom Base'} <span className="text-[#004700] text-xs">x{item.qty}</span>
-                                  </span>
-                                  <span className="font-black text-nutribowl-brown">
-                                    {formatINR(((item.base?.price || 0) + (item.addons ? item.addons.reduce((s, a) => s + a.price, 0) : 0)) * item.qty)}
-                                  </span>
-                                </div>
-                                {item.addons && item.addons.length > 0 ? (
-                                  <p className="text-xs text-nutribowl-muted mt-1 leading-relaxed pl-1 border-l-2 border-l-nutribowl-border">
-                                    + {item.addons.map(a => a.name).join(', ')}
-                                  </p>
-                                ) : (
-                                  <p className="text-[10px] text-nutribowl-muted italic mt-0.5 pl-1 border-l-2 border-l-nutribowl-border/40">
-                                    No toppings
-                                  </p>
-                                )}
-                              </div>
-                            ))}
-                          </div>
-
-                          {/* Notes */}
-                          {order.customer.notes && (
-                            <div className="bg-amber-50/70 border border-amber-100 p-3.5 rounded-2xl mb-4 text-xs">
-                              <span className="font-bold text-amber-800 block uppercase tracking-wider text-[10px] mb-1">Kitchen / Delivery Note:</span>
-                              <p className="text-amber-700 italic">"{order.customer.notes}"</p>
-                            </div>
-                          )}
-                        </div>
-
-                        {/* Order Total Price */}
-                        <div className="flex justify-between items-center border-t border-nutribowl-border/20 pt-4 mt-2">
-                          <span className="font-black text-sm text-nutribowl-brown">Total Charged:</span>
-                          <span className="font-black text-[#004700] text-xl">{formatINR(order.totalPrice)}</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-              </div>
-            )}
-
             {/* Analytics Tab */}
             {activeTab === 'analytics' && stats && (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
