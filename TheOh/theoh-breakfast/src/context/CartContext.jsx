@@ -39,21 +39,63 @@ export function CartProvider({ children }) {
   const addToCart = () => {
     if (!selectedBase) return false;
 
-    const newCartItem = {
-      id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-      type: 'regular',
-      base: selectedBase,
-      addons: [...selectedAddons],
-      qty: builderQty,
-    };
+    // Check if an item with the exact same base and addons already exists
+    const existingIndex = cartItems.findIndex(item => 
+      item.type === 'regular' && 
+      item.base.id === selectedBase.id &&
+      item.addons.length === selectedAddons.length &&
+      item.addons.every(addon => selectedAddons.some(a => a.id === addon.id))
+    );
 
-    setCartItems((prev) => [...prev, newCartItem]);
+    if (existingIndex > -1) {
+      setCartItems((prev) => prev.map((item, idx) => 
+        idx === existingIndex ? { ...item, qty: item.qty + builderQty } : item
+      ));
+    } else {
+      const newCartItem = {
+        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        type: 'regular',
+        base: selectedBase,
+        addons: [...selectedAddons],
+        qty: builderQty,
+      };
+      setCartItems((prev) => [...prev, newCartItem]);
+    }
     
     // Reset builder state
     setSelectedBase(null);
     setSelectedAddons([]);
     setBuilderQty(1);
     
+    return true;
+  };
+
+  const addComboToCart = (combo, qty = 1) => {
+    const existingIndex = cartItems.findIndex(item => 
+      item.type === 'signature' && 
+      item.base.id === combo.id
+    );
+
+    if (existingIndex > -1) {
+      setCartItems((prev) => prev.map((item, idx) => 
+        idx === existingIndex ? { ...item, qty: item.qty + qty } : item
+      ));
+    } else {
+      const newCartItem = {
+        id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        type: 'signature',
+        base: {
+          id: combo.id,
+          name: combo.name,
+          price: combo.price,
+          image: combo.image || 'https://images.unsplash.com/photo-1517673132405-a56a62b18caf?w=300&q=80',
+          desc: combo.desc || combo.description || ''
+        },
+        addons: [],
+        qty: qty
+      };
+      setCartItems((prev) => [...prev, newCartItem]);
+    }
     return true;
   };
 
@@ -118,6 +160,7 @@ export function CartProvider({ children }) {
         toggleAddon,
         updateBuilderQty,
         addToCart,
+        addComboToCart,
         addSubscriptionToCart,
         removeFromCart,
         changeCartItemQty,

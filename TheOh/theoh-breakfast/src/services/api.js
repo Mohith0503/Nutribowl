@@ -17,22 +17,33 @@ export const api = {
     }
     
     // Transform flat DB rows back to the shape the UI expects
-    const bases = data.filter(i => i.type === 'base');
-    const addons = data.filter(i => i.type === 'addon');
-    const combos = data.filter(i => i.type === 'combo');
+    const mappedData = data.map(item => ({
+      ...item,
+      inStock: item.in_stock,
+      desc: item.description,
+      base: item.base_item,
+      addons: item.addon_items,
+      tag: item.combo_tag,
+      prepTime: item.prep_time
+    }));
+
+    const bases = mappedData.filter(i => i.type === 'base');
+    const addons = mappedData.filter(i => i.type === 'addon');
+    const combos = mappedData.filter(i => i.type === 'combo');
     
     return { bases, addons, combos };
   },
 
   submitOrder: async (orderData) => {
-    const newOrderId = `TH-${Math.floor(1000 + Math.random() * 9000)}`;
+    const newOrderId = `NB-${Date.now().toString(36).toUpperCase()}`;
     
     const { data, error } = await supabase.from('orders').insert([{
       id: newOrderId,
       items: orderData.items,
       customer: orderData.customer,
+      plan: orderData.plan,
       total_price: orderData.totalPrice,
-      status: 'pending'
+      status: 'pending_whatsapp'
     }]).select();
 
     if (error) throw new Error(error.message);

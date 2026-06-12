@@ -1,13 +1,9 @@
 import React from 'react';
 import { User, Phone, MapPin, Clock, MessageSquare } from 'lucide-react';
 
-export function CheckoutForm({ formData, onChange, errors }) {
-  const timeSlots = [
-    "7:00 AM - 8:00 AM",
-    "8:00 AM - 9:00 AM",
-    "9:00 AM - 10:00 AM",
-  ];
+import { DELIVERY_SLOTS } from '../../utils/pricing';
 
+export function CheckoutForm({ formData, onChange, errors }) {
   return (
     <div className="space-y-5 bg-nutribowl-cream p-6 rounded-3xl border border-nutribowl-border/75 shadow-sm">
       <h3 className="text-lg font-extrabold text-nutribowl-brown flex items-center gap-2 mb-2">
@@ -91,26 +87,52 @@ export function CheckoutForm({ formData, onChange, errors }) {
         <label className="text-xs font-bold text-nutribowl-brown uppercase tracking-wider block">
           Preferred Delivery Time
         </label>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          {timeSlots.map((slot) => {
-            const selected = formData.timeSlot === slot;
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          {DELIVERY_SLOTS.map((slot) => {
+            const selected = formData.timeSlot === slot.value;
             return (
               <button
-                key={slot}
+                key={slot.id}
                 type="button"
-                onClick={() => onChange({ target: { name: 'timeSlot', value: slot } })}
-                className={`py-3 px-2 rounded-xl text-xs font-extrabold border transition-all flex items-center justify-center gap-1.5 shadow-sm active:scale-95 ${
+                onClick={() => onChange({ target: { name: 'timeSlot', value: slot.value } })}
+                className={`py-3 px-1 rounded-xl text-xs font-black border transition-all flex flex-col items-center justify-center gap-1 shadow-sm active:scale-95 ${
                   selected 
                     ? 'border-nutribowl-orange bg-nutribowl-lightOrange/60 text-nutribowl-orange' 
-                    : 'border-nutribowl-border bg-white text-nutribowl-brown hover:border-nutribowl-orange/40'
+                    : 'border-nutribowl-border bg-white text-nutribowl-brown hover:border-nutribowl-orange/45'
                 }`}
               >
-                <Clock size={13} />
-                <span>{slot}</span>
+                <Clock size={12} />
+                <span className="text-[10px] sm:text-xs text-center">{slot.label}</span>
               </button>
             );
           })}
         </div>
+      </div>
+
+      {/* Start Date Input */}
+      <div className="space-y-1.5">
+        <label htmlFor="startDate" className="text-xs font-bold text-nutribowl-brown uppercase tracking-wider block">
+          Subscription Start Date
+        </label>
+        <div className="relative">
+          <input
+            type="date"
+            id="startDate"
+            name="startDate"
+            min={(() => {
+              const today = new Date();
+              const tomorrow = new Date(today);
+              tomorrow.setDate(tomorrow.getDate() + 1);
+              return tomorrow.toISOString().split('T')[0];
+            })()}
+            value={formData.startDate || ''}
+            onChange={onChange}
+            className={`w-full px-4 py-3 rounded-2xl border bg-white text-nutribowl-text placeholder-nutribowl-muted/65 outline-none transition-all text-sm ${
+              errors.startDate ? 'border-red-400 focus:ring-2 focus:ring-red-100' : 'border-nutribowl-border focus:border-nutribowl-orange focus:ring-2 focus:ring-nutribowl-lightOrange'
+            }`}
+          />
+        </div>
+        {errors.startDate && <p className="text-red-500 text-xs font-semibold">{errors.startDate}</p>}
       </div>
 
       {/* Special Notes Input */}

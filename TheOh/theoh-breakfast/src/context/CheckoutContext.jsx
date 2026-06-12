@@ -8,6 +8,9 @@ export function CheckoutProvider({ children }) {
     plan: null,
     config: {
       qty: 1,
+      name: '',
+      phone: '',
+      timeSlot: '',
       startDate: '',
       address: '',
       instructions: ''
@@ -41,6 +44,9 @@ export function CheckoutProvider({ children }) {
       plan: null,
       config: {
         qty: 1,
+        name: '',
+        phone: '',
+        timeSlot: '',
         startDate: '',
         address: '',
         instructions: ''

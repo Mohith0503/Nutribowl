@@ -5,10 +5,12 @@ import { Flame, Check, ShieldCheck, Zap, Bike } from 'lucide-react';
 import { Hero } from '../components/home/Hero';
 import { api } from '../services/api';
 import { useMenu } from '../context/MenuContext';
+import { useCart } from '../context/CartContext';
 
 export function Home() {
   const navigate = useNavigate();
   const { menu, isLoading } = useMenu();
+  const { addComboToCart, setIsCartOpen } = useCart();
 
   const features = [
     {
@@ -95,7 +97,7 @@ export function Home() {
             {isLoading ? (
               <div className="col-span-1 md:col-span-3 text-center py-10 text-nutribowl-muted">Loading Signature Dishes...</div>
             ) : (
-              menu.bases.filter(b => b.inStock !== false).slice(0, 6).map((meal, idx) => (
+              menu.combos.slice(0, 6).map((meal, idx) => (
                 <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -114,9 +116,16 @@ export function Home() {
                       {meal.tags[0]}
                     </span>
                   )}
+                  {meal.inStock === false && (
+                    <div className="absolute inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                      <span className="bg-red-600 text-white font-black text-xs uppercase tracking-wider px-4 py-2 rounded-full shadow-lg">
+                        Out of Stock
+                      </span>
+                    </div>
+                  )}
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-bold text-nutribowl-brown mb-2 group-hover:text-nutribowl-orange transition-colors">
+                  <h3 className="text-xl font-bold text-nutribowl-brown mb-2 group-hover:text-nutribowl-orange transition-colors line-clamp-1">
                     {meal.name}
                   </h3>
                   <p className="text-nutribowl-muted text-xs leading-relaxed mb-6 line-clamp-2">
@@ -124,11 +133,25 @@ export function Home() {
                   </p>
                   <div className="flex justify-between items-center border-t border-nutribowl-border/30 pt-4">
                     <span className="text-2xl font-black text-nutribowl-brown">₹{meal.price}</span>
-                    <button
-                      className="bg-[#004700] hover:bg-[#003300] text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all group-hover:scale-105"
-                    >
-                      Subscribe →
-                    </button>
+                    {meal.inStock === false ? (
+                      <button
+                        disabled
+                        className="bg-gray-300 text-gray-500 font-bold text-xs px-5 py-2.5 rounded-full cursor-not-allowed"
+                      >
+                        Out of Stock
+                      </button>
+                    ) : (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addComboToCart(meal);
+                          setIsCartOpen(true);
+                        }}
+                        className="bg-[#004700] hover:bg-[#003300] text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all group-hover:scale-105"
+                      >
+                        Subscribe →
+                      </button>
+                    )}
                   </div>
                 </div>
               </motion.div>

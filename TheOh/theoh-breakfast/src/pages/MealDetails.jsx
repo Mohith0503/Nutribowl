@@ -20,13 +20,13 @@ export function MealDetails() {
     
     if (isLoading) return;
 
-    const foundMeal = menu.bases.find(m => m.id === id);
+    const foundMeal = menu.bases.find(m => m.id === id) || menu.combos.find(m => m.id === id);
     if (foundMeal) {
       setMeal(foundMeal);
     } else {
       navigate('/');
     }
-  }, [id, navigate, menu.bases, isLoading]);
+  }, [id, navigate, menu.bases, menu.combos, isLoading]);
 
   const handleSelectPlan = (planId) => {
     if (!meal) return;
@@ -158,38 +158,48 @@ export function MealDetails() {
         )}
 
         {/* Choose Your Plan Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-        >
-          <div className="text-center mb-6">
-            <h2 className="text-2xl font-black text-nutribowl-brown uppercase tracking-tight">Choose Your Plan</h2>
-            <p className="text-sm text-nutribowl-muted mt-2">Base meal price: <span className="font-bold text-nutribowl-brown">{formatINR(meal.price)}</span>/day</p>
+        {meal.inStock === false ? (
+          <div className="bg-red-50 border border-red-200 p-8 rounded-3xl text-center shadow-inner my-8">
+            <span className="text-3xl block mb-2">🥣</span>
+            <p className="text-red-700 font-extrabold text-lg uppercase tracking-wider">Currently Out of Stock</p>
+            <p className="text-xs text-red-600 mt-1.5 font-medium leading-relaxed max-w-sm mx-auto">
+              This delicious breakfast choice is currently unavailable. Please browse our other signature dishes or custom bowls!
+            </p>
           </div>
+        ) : (
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-black text-nutribowl-brown uppercase tracking-tight">Choose Your Plan</h2>
+              <p className="text-sm text-nutribowl-muted mt-2">Base meal price: <span className="font-bold text-nutribowl-brown">{formatINR(meal.price)}</span>/day</p>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {/* Plan 1: Tomorrow */}
-            <PlanCard 
-              planId="tomorrow" 
-              basePrice={meal.price} 
-              onSelect={handleSelectPlan} 
-            />
-            {/* Plan 2: Weekly */}
-            <PlanCard 
-              planId="weekly" 
-              basePrice={meal.price} 
-              onSelect={handleSelectPlan} 
-              highlight={true}
-            />
-            {/* Plan 3: Monthly */}
-            <PlanCard 
-              planId="monthly" 
-              basePrice={meal.price} 
-              onSelect={handleSelectPlan} 
-            />
-          </div>
-        </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Plan 1: Tomorrow */}
+              <PlanCard 
+                planId="tomorrow" 
+                basePrice={meal.price} 
+                onSelect={handleSelectPlan} 
+              />
+              {/* Plan 2: Weekly */}
+              <PlanCard 
+                planId="weekly" 
+                basePrice={meal.price} 
+                onSelect={handleSelectPlan} 
+                highlight={true}
+              />
+              {/* Plan 3: Monthly */}
+              <PlanCard 
+                planId="monthly" 
+                basePrice={meal.price} 
+                onSelect={handleSelectPlan} 
+              />
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   );

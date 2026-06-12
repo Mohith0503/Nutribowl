@@ -38,7 +38,7 @@ export function SubscriptionCards({ onSelectPlan }) {
           <p className="text-sm text-nutribowl-muted mb-6 z-10 min-h-[40px]">{plan.description}</p>
           
           <div className="flex flex-col items-center justify-center mb-8 z-10">
-            <span className="text-sm text-nutribowl-muted line-through mb-1">{formatINR(plan.originalPrice)}</span>
+            <span className="text-[10px] uppercase font-bold text-nutribowl-muted tracking-wider mb-1">Starts From</span>
             <span className="text-5xl font-black text-[#004700] tracking-tight">{formatINR(plan.discountedPrice)}</span>
             <span className="mt-2 bg-[#E8F5E9] text-[#004700] font-bold text-xs px-3 py-1 rounded-full border border-green-200">
               Save {formatINR(plan.savings)}
