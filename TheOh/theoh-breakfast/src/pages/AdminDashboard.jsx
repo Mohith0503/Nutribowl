@@ -76,7 +76,14 @@ export function AdminDashboard({ onLogout }) {
     image: '',
     tags: '',
     desc: '',
-    inStock: true
+    inStock: true,
+    calories: '',
+    protein: '',
+    carbs: '',
+    fiber: '',
+    fat: '',
+    prepTime: '5 min',
+    ingredients: ''
   };
   const [menuFormData, setMenuFormData] = useState(initialFormData);
 
@@ -271,7 +278,14 @@ export function AdminDashboard({ onLogout }) {
       inStock: true,
       tag: '',
       base: '',
-      addons: []
+      addons: [],
+      calories: '',
+      protein: '',
+      carbs: '',
+      fiber: '',
+      fat: '',
+      prepTime: '5 min',
+      ingredients: ''
     });
     setShowMenuModal(true);
   };
@@ -292,7 +306,14 @@ export function AdminDashboard({ onLogout }) {
       inStock: item.inStock !== false,
       tag: item.tag || '',
       base: item.base || '',
-      addons: item.addons || []
+      addons: item.addons || [],
+      calories: item.nutrition?.calories || '',
+      protein: item.nutrition?.protein || '',
+      carbs: item.nutrition?.carbs || '',
+      fiber: item.nutrition?.fiber || '',
+      fat: item.nutrition?.fat || '',
+      prepTime: item.prepTime || '',
+      ingredients: item.ingredients ? item.ingredients.join(', ') : ''
     });
     setShowMenuModal(true);
   };
@@ -322,7 +343,18 @@ export function AdminDashboard({ onLogout }) {
         type: menuFormData.type,
         tag: menuFormData.tag || '',
         base: menuFormData.base || '',
-        addons: menuFormData.addons || []
+        addons: menuFormData.addons || [],
+        prepTime: menuFormData.prepTime || '5 min',
+        ingredients: menuFormData.ingredients
+          ? menuFormData.ingredients.split(',').map(i => i.trim()).filter(Boolean)
+          : [],
+        nutrition: {
+          calories: parseInt(menuFormData.calories) || 0,
+          protein: menuFormData.protein ? (menuFormData.protein.endsWith('g') ? menuFormData.protein : `${menuFormData.protein}g`) : '',
+          carbs: menuFormData.carbs ? (menuFormData.carbs.endsWith('g') ? menuFormData.carbs : `${menuFormData.carbs}g`) : '',
+          fiber: menuFormData.fiber ? (menuFormData.fiber.endsWith('g') ? menuFormData.fiber : `${menuFormData.fiber}g`) : '',
+          fat: menuFormData.fat ? (menuFormData.fat.endsWith('g') ? menuFormData.fat : `${menuFormData.fat}g`) : ''
+        }
       };
 
       if (editingItem) {
@@ -363,6 +395,19 @@ export function AdminDashboard({ onLogout }) {
               <div>
                 <span className="font-black text-nutribowl-brown text-lg uppercase tracking-wide">Nutribowl</span>
                 <span className="text-xs bg-[#E8F5E9] text-[#004700] ml-2 px-2.5 py-0.5 rounded-full font-black uppercase">Admin Panel</span>
+                {(() => {
+                  const hr = new Date().getHours();
+                  const isOpen = hr >= 13 && hr < 22;
+                  return isOpen ? (
+                    <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 ml-2 px-2 py-0.5 rounded-full font-black uppercase tracking-wider">
+                      ● Order Desk Open
+                    </span>
+                  ) : (
+                    <span className="text-[10px] bg-red-50 text-red-600 border border-red-200 ml-2 px-2 py-0.5 rounded-full font-black uppercase tracking-wider">
+                      ● Order Desk Closed
+                    </span>
+                  );
+                })()}
               </div>
             </div>
 
@@ -1219,8 +1264,93 @@ export function AdminDashboard({ onLogout }) {
                       placeholder="Provide a detailed description of the oatmeal or bread base..."
                       value={menuFormData.desc}
                       onChange={(e) => setMenuFormData(prev => ({ ...prev, desc: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[#004700] text-nutribowl-brown font-medium placeholder-nutribowl-muted/65 bg-white resize-none"
+                      className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[#FF8E72] text-nutribowl-brown font-medium placeholder-nutribowl-muted/65 bg-white resize-none"
                     />
+                  </div>
+                )}
+
+                {/* Prep Time & Ingredients (only for base and combo) */}
+                {(menuFormData.type === 'base' || menuFormData.type === 'combo') && (
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-nutribowl-muted uppercase tracking-wider mb-1.5">Prep Time</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 5 min, 10 min"
+                        value={menuFormData.prepTime}
+                        onChange={(e) => setMenuFormData(prev => ({ ...prev, prepTime: e.target.value }))}
+                        className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[#FF8E72] text-nutribowl-brown font-bold placeholder-nutribowl-muted/65 bg-white"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-nutribowl-muted uppercase tracking-wider mb-1.5">Ingredients (Comma separated)</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. Oats, Apple, Chia seeds"
+                        value={menuFormData.ingredients}
+                        onChange={(e) => setMenuFormData(prev => ({ ...prev, ingredients: e.target.value }))}
+                        className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[#FF8E72] text-nutribowl-brown font-bold placeholder-nutribowl-muted/65 bg-white"
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {/* Nutrition Facts Section (only for base and combo) */}
+                {(menuFormData.type === 'base' || menuFormData.type === 'combo') && (
+                  <div className="border-t border-nutribowl-border/20 pt-4 mt-4">
+                    <h4 className="text-xs font-black text-nutribowl-brown uppercase tracking-wider mb-3">Nutrition Facts</h4>
+                    <div className="grid grid-cols-5 gap-2">
+                      <div>
+                        <label className="block text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider mb-1">Calories</label>
+                        <input
+                          type="number"
+                          placeholder="kcal"
+                          value={menuFormData.calories}
+                          onChange={(e) => setMenuFormData(prev => ({ ...prev, calories: e.target.value }))}
+                          className="w-full px-2 py-2 rounded-xl border border-nutribowl-border outline-none focus:border-[#FF8E72] text-nutribowl-brown font-bold text-xs bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider mb-1">Protein</label>
+                        <input
+                          type="text"
+                          placeholder="g"
+                          value={menuFormData.protein}
+                          onChange={(e) => setMenuFormData(prev => ({ ...prev, protein: e.target.value }))}
+                          className="w-full px-2 py-2 rounded-xl border border-nutribowl-border outline-none focus:border-[#FF8E72] text-nutribowl-brown font-bold text-xs bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider mb-1">Carbs</label>
+                        <input
+                          type="text"
+                          placeholder="g"
+                          value={menuFormData.carbs}
+                          onChange={(e) => setMenuFormData(prev => ({ ...prev, carbs: e.target.value }))}
+                          className="w-full px-2 py-2 rounded-xl border border-nutribowl-border outline-none focus:border-[#FF8E72] text-nutribowl-brown font-bold text-xs bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider mb-1">Fiber</label>
+                        <input
+                          type="text"
+                          placeholder="g"
+                          value={menuFormData.fiber}
+                          onChange={(e) => setMenuFormData(prev => ({ ...prev, fiber: e.target.value }))}
+                          className="w-full px-2 py-2 rounded-xl border border-nutribowl-border outline-none focus:border-[#FF8E72] text-nutribowl-brown font-bold text-xs bg-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider mb-1">Fat</label>
+                        <input
+                          type="text"
+                          placeholder="g"
+                          value={menuFormData.fat}
+                          onChange={(e) => setMenuFormData(prev => ({ ...prev, fat: e.target.value }))}
+                          className="w-full px-2 py-2 rounded-xl border border-nutribowl-border outline-none focus:border-[#FF8E72] text-nutribowl-brown font-bold text-xs bg-white"
+                        />
+                      </div>
+                    </div>
                   </div>
                 )}
 

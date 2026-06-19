@@ -74,6 +74,32 @@ export function MenuCard({ item, selected, onClick, showDesc = false }) {
               {item.desc}
             </p>
           )}
+
+          {/* Nutrition Facts */}
+          {item.nutrition && (item.nutrition.calories || item.nutrition.protein || item.nutrition.carbs || item.nutrition.fiber || item.nutrition.fat) && (
+            <div className="grid grid-cols-5 gap-1 py-1.5 px-2 rounded-xl bg-nutribowl-beige/50 border border-nutribowl-border/25 mt-2.5">
+              <div className="text-center border-r border-nutribowl-border/30 last:border-r-0">
+                <span className="block text-[7px] font-black uppercase text-nutribowl-muted tracking-wider">Kcal</span>
+                <span className="font-extrabold text-[9px] text-nutribowl-brown">{item.nutrition.calories || '-'}</span>
+              </div>
+              <div className="text-center border-r border-nutribowl-border/30 last:border-r-0">
+                <span className="block text-[7px] font-black uppercase text-nutribowl-muted tracking-wider">Prot</span>
+                <span className="font-extrabold text-[9px] text-nutribowl-brown">{item.nutrition.protein || '-'}</span>
+              </div>
+              <div className="text-center border-r border-nutribowl-border/30 last:border-r-0">
+                <span className="block text-[7px] font-black uppercase text-nutribowl-muted tracking-wider">Carb</span>
+                <span className="font-extrabold text-[9px] text-nutribowl-brown">{item.nutrition.carbs || '-'}</span>
+              </div>
+              <div className="text-center border-r border-nutribowl-border/30 last:border-r-0">
+                <span className="block text-[7px] font-black uppercase text-nutribowl-muted tracking-wider">Fiber</span>
+                <span className="font-extrabold text-[9px] text-nutribowl-brown">{item.nutrition.fiber || '-'}</span>
+              </div>
+              <div className="text-center">
+                <span className="block text-[7px] font-black uppercase text-nutribowl-muted tracking-wider">Fat</span>
+                <span className="font-extrabold text-[9px] text-nutribowl-brown">{item.nutrition.fat || '-'}</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Pricing details */}

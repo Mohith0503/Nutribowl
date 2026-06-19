@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Info, CheckCircle2, Clock, Flame, Loader2 } from 'lucide-react';
-import { SUBSCRIPTION_PLANS } from '../utils/pricing';
+import { SUBSCRIPTION_PLANS, calculateSubscriptionPrice } from '../utils/pricing';
 import { useMenu } from '../context/MenuContext';
 import { useCart } from '../context/CartContext';
 import { formatINR } from '../utils/currency';

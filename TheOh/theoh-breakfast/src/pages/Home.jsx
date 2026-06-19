@@ -128,9 +128,35 @@ export function Home() {
                   <h3 className="text-xl font-bold text-nutribowl-brown mb-2 group-hover:text-nutribowl-orange transition-colors line-clamp-1">
                     {meal.name}
                   </h3>
-                  <p className="text-nutribowl-muted text-xs leading-relaxed mb-6 line-clamp-2">
+                  <p className="text-nutribowl-muted text-xs leading-relaxed line-clamp-2">
                     {meal.desc}
                   </p>
+                  
+                  {/* Nutrition Facts */}
+                  {meal.nutrition && (meal.nutrition.calories || meal.nutrition.protein || meal.nutrition.carbs || meal.nutrition.fiber || meal.nutrition.fat) && (
+                    <div className="grid grid-cols-5 gap-1 py-2 px-2.5 rounded-xl bg-nutribowl-beige/50 border border-nutribowl-border/25 mt-4 mb-2">
+                      <div className="text-center border-r border-nutribowl-border/30 last:border-r-0">
+                        <span className="block text-[8px] font-black uppercase text-nutribowl-muted tracking-wider">Kcal</span>
+                        <span className="font-extrabold text-[10px] text-nutribowl-brown">{meal.nutrition.calories || '-'}</span>
+                      </div>
+                      <div className="text-center border-r border-nutribowl-border/30 last:border-r-0">
+                        <span className="block text-[8px] font-black uppercase text-nutribowl-muted tracking-wider">Prot</span>
+                        <span className="font-extrabold text-[10px] text-nutribowl-brown">{meal.nutrition.protein || '-'}</span>
+                      </div>
+                      <div className="text-center border-r border-nutribowl-border/30 last:border-r-0">
+                        <span className="block text-[8px] font-black uppercase text-nutribowl-muted tracking-wider">Carb</span>
+                        <span className="font-extrabold text-[10px] text-nutribowl-brown">{meal.nutrition.carbs || '-'}</span>
+                      </div>
+                      <div className="text-center border-r border-nutribowl-border/30 last:border-r-0">
+                        <span className="block text-[8px] font-black uppercase text-nutribowl-muted tracking-wider">Fiber</span>
+                        <span className="font-extrabold text-[10px] text-nutribowl-brown">{meal.nutrition.fiber || '-'}</span>
+                      </div>
+                      <div className="text-center">
+                        <span className="block text-[8px] font-black uppercase text-nutribowl-muted tracking-wider">Fat</span>
+                        <span className="font-extrabold text-[10px] text-nutribowl-brown">{meal.nutrition.fat || '-'}</span>
+                      </div>
+                    </div>
+                  )}
                   <div className="flex justify-between items-center border-t border-nutribowl-border/30 pt-4">
                     <span className="text-2xl font-black text-nutribowl-brown">₹{meal.price}</span>
                     {meal.inStock === false ? (

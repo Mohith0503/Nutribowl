@@ -435,6 +435,32 @@ export function Menu() {
                         <p className="text-nutribowl-muted text-xs leading-relaxed font-medium line-clamp-3">
                           {combo.desc}
                         </p>
+                        
+                        {/* Nutrition Facts */}
+                        {combo.nutrition && (combo.nutrition.calories || combo.nutrition.protein || combo.nutrition.carbs || combo.nutrition.fiber || combo.nutrition.fat) && (
+                          <div className="grid grid-cols-5 gap-1 py-2 px-2.5 rounded-xl bg-nutribowl-beige/50 border border-nutribowl-border/25 mt-4">
+                            <div className="text-center border-r border-nutribowl-border/30 last:border-r-0">
+                              <span className="block text-[8px] font-black uppercase text-nutribowl-muted tracking-wider">Kcal</span>
+                              <span className="font-extrabold text-[10px] text-nutribowl-brown">{combo.nutrition.calories || '-'}</span>
+                            </div>
+                            <div className="text-center border-r border-nutribowl-border/30 last:border-r-0">
+                              <span className="block text-[8px] font-black uppercase text-nutribowl-muted tracking-wider">Prot</span>
+                              <span className="font-extrabold text-[10px] text-nutribowl-brown">{combo.nutrition.protein || '-'}</span>
+                            </div>
+                            <div className="text-center border-r border-nutribowl-border/30 last:border-r-0">
+                              <span className="block text-[8px] font-black uppercase text-nutribowl-muted tracking-wider">Carb</span>
+                              <span className="font-extrabold text-[10px] text-nutribowl-brown">{combo.nutrition.carbs || '-'}</span>
+                            </div>
+                            <div className="text-center border-r border-nutribowl-border/30 last:border-r-0">
+                              <span className="block text-[8px] font-black uppercase text-nutribowl-muted tracking-wider">Fiber</span>
+                              <span className="font-extrabold text-[10px] text-nutribowl-brown">{combo.nutrition.fiber || '-'}</span>
+                            </div>
+                            <div className="text-center">
+                              <span className="block text-[8px] font-black uppercase text-nutribowl-muted tracking-wider">Fat</span>
+                              <span className="font-extrabold text-[10px] text-nutribowl-brown">{combo.nutrition.fat || '-'}</span>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
 

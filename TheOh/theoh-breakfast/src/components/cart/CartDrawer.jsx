@@ -96,6 +96,12 @@ export function CartDrawer() {
   };
 
   const handleCheckout = async () => {
+    const hr = new Date().getHours();
+    const isTimeValid = hr >= 13 && hr < 22;
+    if (!isTimeValid) {
+      setSubmitError('Ordering is closed. Orders are only accepted between 1:00 PM and 10:00 PM.');
+      return;
+    }
     if (!validateForm()) return;
 
     setIsSubmitting(true);
@@ -606,24 +612,39 @@ export function CartDrawer() {
                     )}
 
                     {/* Action Button */}
-                    {!checkoutMode ? (
-                      <button
-                        onClick={() => setCheckoutMode(true)}
-                        className="w-full bg-[#004700] hover:bg-[#003300] text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-98"
-                      >
-                        <span>Configure Delivery Info</span>
-                        <ArrowRight size={14} />
-                      </button>
-                    ) : (
-                      <button
-                        onClick={handleCheckout}
-                        disabled={isSubmitting}
-                        className="w-full bg-[#004700] hover:bg-[#003300] text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed active:scale-98"
-                      >
-                        <span>{isSubmitting ? 'Recording Order...' : 'Place Order & Get WhatsApp Link'}</span>
-                        {!isSubmitting && <ArrowRight size={14} />}
-                      </button>
-                    )}
+                    {(() => {
+                      const hr = new Date().getHours();
+                      const isTimeValid = hr >= 13 && hr < 22;
+                      return (
+                        <div className="space-y-3 w-full">
+                          {!isTimeValid && (
+                            <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold p-3.5 rounded-2xl text-center space-y-1">
+                              <p className="font-bold uppercase tracking-wider">Ordering is Closed</p>
+                              <p className="text-nutribowl-muted">Ordering is currently closed. Please check back later!</p>
+                            </div>
+                          )}
+                          {!checkoutMode ? (
+                            <button
+                              onClick={() => setCheckoutMode(true)}
+                              disabled={!isTimeValid}
+                              className="w-full bg-[#004700] hover:bg-[#003300] disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-98"
+                            >
+                              <span>{isTimeValid ? 'Configure Delivery Info' : 'Ordering is Closed'}</span>
+                              {isTimeValid && <ArrowRight size={14} />}
+                            </button>
+                          ) : (
+                            <button
+                              onClick={handleCheckout}
+                              disabled={isSubmitting || !isTimeValid}
+                              className="w-full bg-[#004700] hover:bg-[#003300] disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-98"
+                            >
+                              <span>{isSubmitting ? 'Recording Order...' : 'Place Order & Get WhatsApp Link'}</span>
+                              {!isSubmitting && <ArrowRight size={14} />}
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })()}
                   </div>
                 )}
               </motion.div>

@@ -189,19 +189,34 @@ export const api = {
   updateMenuItem: async (id, itemData) => {
     if (!isAdmin()) throw new Error('Unauthorized');
     
-    const payload = {};
-    if (itemData.name !== undefined) payload.name = itemData.name;
-    if (itemData.price !== undefined) payload.price = itemData.price;
-    if (itemData.inStock !== undefined) payload.in_stock = itemData.inStock;
-    if (itemData.tags !== undefined) payload.tags = itemData.tags;
-    if (itemData.image !== undefined) payload.image = itemData.image;
-    if (itemData.category !== undefined) payload.category = itemData.category;
-    if (itemData.desc !== undefined) payload.description = itemData.desc;
+    const payload = {
+      name: itemData.name,
+      price: itemData.price,
+      in_stock: itemData.inStock,
+      tags: itemData.tags,
+      image: itemData.image,
+      category: itemData.category,
+      description: itemData.desc,
+      ingredients: itemData.ingredients,
+      nutrition: itemData.nutrition,
+      prep_time: itemData.prepTime,
+      base_item: itemData.base,
+      addon_items: itemData.addons,
+      combo_tag: itemData.tag
+    };
 
     const { data, error } = await supabase.from('menu_items').update(payload).eq('id', id).select();
     if (error) throw new Error(error.message);
     
-    return data[0] ? { ...data[0], inStock: data[0].in_stock } : null;
+    return data[0] ? {
+      ...data[0],
+      inStock: data[0].in_stock,
+      desc: data[0].description,
+      base: data[0].base_item,
+      addons: data[0].addon_items,
+      tag: data[0].combo_tag,
+      prepTime: data[0].prep_time
+    } : null;
   },
 
   deleteMenuItem: async (id) => {
