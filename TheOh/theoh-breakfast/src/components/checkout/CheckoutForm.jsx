@@ -2,6 +2,7 @@ import React from 'react';
 import { User, Phone, MapPin, Clock, MessageSquare } from 'lucide-react';
 
 import { DELIVERY_SLOTS } from '../../utils/pricing';
+import { getMinStartDate } from '../../utils/date';
 
 export function CheckoutForm({ formData, onChange, errors }) {
   return (
@@ -119,12 +120,7 @@ export function CheckoutForm({ formData, onChange, errors }) {
             type="date"
             id="startDate"
             name="startDate"
-            min={(() => {
-              const today = new Date();
-              const tomorrow = new Date(today);
-              tomorrow.setDate(tomorrow.getDate() + 1);
-              return tomorrow.toISOString().split('T')[0];
-            })()}
+            min={getMinStartDate()}
             value={formData.startDate || ''}
             onChange={onChange}
             className={`w-full px-4 py-3 rounded-2xl border bg-white text-nutribowl-text placeholder-nutribowl-muted/65 outline-none transition-all text-sm ${

@@ -117,7 +117,7 @@ export function MySubscriptions() {
   return (
     <div className="bg-nutribowl-beige min-h-screen pb-20">
       {/* Header */}
-      <section className="bg-gradient-to-br from-[#004700] via-[#005500] to-[#003300] text-white py-16 px-4 relative overflow-hidden">
+      <section className="bg-gradient-to-br from-[var(--primary)] via-[var(--primary-hover)] to-[var(--primary-hover)] text-white py-16 px-4 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-72 h-72 bg-white/5 rounded-full -mr-36 -mt-36" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full -ml-24 -mb-24" />
         <div className="max-w-5xl mx-auto relative z-10">
@@ -139,8 +139,8 @@ export function MySubscriptions() {
             animate={{ opacity: 1, y: 0 }}
             className="bg-white p-8 sm:p-10 rounded-[2.5rem] border border-nutribowl-border/45 shadow-premium max-w-lg mx-auto text-center"
           >
-            <div className="w-16 h-16 bg-[#E8F5E9] rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Package size={28} className="text-[#004700]" />
+            <div className="w-16 h-16 bg-[var(--accent-light)] rounded-2xl flex items-center justify-center mx-auto mb-6">
+              <Package size={28} className="text-[var(--primary)]" />
             </div>
             <h2 className="text-2xl font-black text-nutribowl-brown mb-2">Track Your Deliveries</h2>
             <p className="text-nutribowl-muted text-sm mb-6 leading-relaxed">
@@ -157,7 +157,7 @@ export function MySubscriptions() {
                     value={phone}
                     onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
                     placeholder="Enter 10-digit mobile number"
-                    className="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-nutribowl-border bg-white text-nutribowl-text placeholder-nutribowl-muted/60 outline-none focus:border-[#004700] focus:ring-2 focus:ring-[#004700]/10 font-bold transition-all text-sm"
+                    className="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-nutribowl-border bg-white text-nutribowl-text placeholder-nutribowl-muted/60 outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/10 font-bold transition-all text-sm"
                   />
                 </div>
                 {error && <p className="text-red-500 text-xs font-semibold text-left mt-2 pl-1">{error}</p>}
@@ -166,7 +166,7 @@ export function MySubscriptions() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full py-4 bg-[#004700] hover:bg-[#003300] disabled:bg-nutribowl-muted text-white rounded-full font-black text-sm uppercase tracking-widest active:scale-98 transition-all flex items-center justify-center gap-2"
+                className="w-full py-4 bg-[var(--primary)] hover:bg-[var(--primary-hover)] disabled:bg-nutribowl-muted text-white rounded-full font-black text-sm uppercase tracking-widest active:scale-98 transition-all flex items-center justify-center gap-2"
               >
                 {isLoading ? (
                   <>
@@ -191,7 +191,7 @@ export function MySubscriptions() {
               </p>
               <button 
                 onClick={() => { setSearched(false); setOrders([]); setPhone(''); }} 
-                className="text-xs font-bold text-[#004700] hover:underline"
+                className="text-xs font-bold text-[var(--primary)] hover:underline"
               >
                 Look up another number
               </button>
@@ -215,7 +215,7 @@ export function MySubscriptions() {
                   </button>
                   <button 
                     onClick={() => navigate('/subscriptions')} 
-                    className="px-6 py-3 bg-[#004700] hover:bg-[#003300] text-white rounded-full font-bold text-xs uppercase tracking-wider transition-colors"
+                    className="px-6 py-3 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white rounded-full font-bold text-xs uppercase tracking-wider transition-colors"
                   >
                     Browse Plans
                   </button>
@@ -258,14 +258,14 @@ export function MySubscriptions() {
                         </p>
                         <div className="flex items-center gap-4 mt-2.5 text-xs text-nutribowl-muted font-bold flex-wrap">
                           <span className="flex items-center gap-1.5">
-                            <Calendar size={13} className="text-[#004700]" /> 
+                            <Calendar size={13} className="text-[var(--primary)]" /> 
                             {start.toLocaleDateString('en-IN', dateOptions)} → {end.toLocaleDateString('en-IN', dateOptions)}
                           </span>
                           <span className="flex items-center gap-1.5">
-                            <Clock size={13} className="text-[#004700]" /> 
+                            <Clock size={13} className="text-[var(--primary)]" /> 
                             {order.customer.timeSlot}
                           </span>
-                          <span className="font-black text-[#004700] text-sm">{formatINR(order.total_price)}</span>
+                          <span className="font-black text-[var(--primary)] text-sm">{formatINR(order.total_price)}</span>
                         </div>
                       </div>
 
@@ -308,7 +308,7 @@ export function MySubscriptions() {
                           <div className="p-6">
                             <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
                               <h4 className="text-xs font-black text-nutribowl-brown uppercase tracking-wider flex items-center gap-1.5">
-                                <Clock size={13} className="text-[#004700]" /> Delivery Calendar
+                                <Clock size={13} className="text-[var(--primary)]" /> Delivery Calendar
                               </h4>
                               <span className="text-[10px] text-nutribowl-muted font-bold">
                                 Delivery Address: <span className="text-nutribowl-brown">{order.customer.address}</span>

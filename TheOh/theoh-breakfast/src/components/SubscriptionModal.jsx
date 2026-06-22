@@ -81,7 +81,7 @@ export function SubscriptionModal({ isOpen, onClose, plan, onAddToCart }) {
           className="relative bg-white w-full max-w-lg rounded-[2rem] shadow-2xl overflow-hidden z-10"
         >
           {/* Header */}
-          <div className="bg-[#004700] p-6 text-white flex justify-between items-center">
+          <div className="bg-[var(--primary)] p-6 text-white flex justify-between items-center">
             <div>
               <h2 className="text-2xl font-black">{plan.name}</h2>
               <p className="text-green-100 text-sm mt-1">{duration} Days Duration</p>
@@ -98,7 +98,7 @@ export function SubscriptionModal({ isOpen, onClose, plan, onAddToCart }) {
               <select 
                 value={selectedMeal?.id || ''} 
                 onChange={handleMealChange}
-                className="w-full bg-nutribowl-beige border-none rounded-xl p-4 text-nutribowl-brown font-semibold focus:ring-2 focus:ring-[#004700] outline-none"
+                className="w-full bg-nutribowl-beige border-none rounded-xl p-4 text-nutribowl-brown font-semibold focus:ring-2 focus:ring-[var(--primary)] outline-none"
               >
                 {signatureDishes.length === 0 ? (
                   <option value="" disabled>Loading signature dishes...</option>
@@ -117,14 +117,14 @@ export function SubscriptionModal({ isOpen, onClose, plan, onAddToCart }) {
               <label className="block text-sm font-bold text-nutribowl-muted uppercase tracking-wide mb-2">Start Date</label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                  <Calendar size={18} className="text-[#004700]" />
+                  <Calendar size={18} className="text-[var(--primary)]" />
                 </div>
                 <input 
                   type="date" 
                   value={startDate} 
                   min={new Date(Date.now() + 86400000).toISOString().split('T')[0]} // Min tomorrow
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full bg-nutribowl-beige border-none rounded-xl p-4 pl-12 text-nutribowl-brown font-semibold focus:ring-2 focus:ring-[#004700] outline-none"
+                  className="w-full bg-nutribowl-beige border-none rounded-xl p-4 pl-12 text-nutribowl-brown font-semibold focus:ring-2 focus:ring-[var(--primary)] outline-none"
                 />
               </div>
             </div>
@@ -135,7 +135,7 @@ export function SubscriptionModal({ isOpen, onClose, plan, onAddToCart }) {
               <div className="flex items-center gap-4 bg-nutribowl-beige w-max rounded-xl p-2">
                 <button onClick={() => setQty(Math.max(1, qty - 1))} className="w-10 h-10 bg-white rounded-lg flex items-center justify-center font-bold text-xl hover:bg-gray-50">-</button>
                 <span className="w-8 text-center font-black text-xl text-nutribowl-brown">{qty}</span>
-                <button onClick={() => setQty(qty + 1)} className="w-10 h-10 bg-[#004700] text-white rounded-lg flex items-center justify-center font-bold text-xl hover:bg-[#003300]">+</button>
+                <button onClick={() => setQty(qty + 1)} className="w-10 h-10 bg-[var(--primary)] text-white rounded-lg flex items-center justify-center font-bold text-xl hover:bg-[var(--primary-hover)]">+</button>
               </div>
             </div>
 
@@ -163,7 +163,7 @@ export function SubscriptionModal({ isOpen, onClose, plan, onAddToCart }) {
                 <div className="h-px bg-nutribowl-border/20 my-1" />
                 <div className="flex justify-between items-end">
                   <span className="font-black text-nutribowl-brown text-sm uppercase tracking-wider">Total Subscription</span>
-                  <span className="font-black text-xl text-[#004700]">{formatINR(finalPrice)}</span>
+                  <span className="font-black text-xl text-[var(--primary)]">{formatINR(finalPrice)}</span>
                 </div>
               </div>
             )}
@@ -175,7 +175,7 @@ export function SubscriptionModal({ isOpen, onClose, plan, onAddToCart }) {
               className={`w-full text-white font-bold text-lg py-4 rounded-2xl shadow-xl transition-all ${
                 isOutOfStock 
                   ? 'bg-gray-300 text-gray-500 cursor-not-allowed shadow-none' 
-                  : 'bg-[#004700] hover:scale-[1.02] shadow-green-900/20'
+                  : 'bg-[var(--primary)] hover:scale-[1.02] shadow-green-900/20'
               }`}
             >
               {isOutOfStock ? 'Out of Stock' : `Add to Cart - ${formatINR(finalPrice)}`}

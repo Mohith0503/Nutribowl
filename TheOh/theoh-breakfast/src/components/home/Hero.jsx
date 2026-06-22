@@ -98,7 +98,7 @@ export function Hero() {
           <div className="flex flex-col sm:flex-row gap-4 mt-4">
             <Link
               to="/menu"
-              className="flex items-center justify-center gap-2 bg-nutribowl-orange hover:bg-[#B45014] text-white font-bold py-3 px-6 rounded-full"
+              className="flex items-center justify-center gap-2 bg-nutribowl-orange hover:bg-[var(--primary-hover)] text-white font-bold py-3 px-6 rounded-full"
             >
               <span>Order Now</span>
               <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
@@ -122,7 +122,7 @@ export function Hero() {
           {isVideoEnded && (
             <button
               onClick={handleReplay}
-              className="mt-2 flex items-center gap-1 text-nutribowl-orange hover:text-[#B45014] transition-colors border border-nutribowl-orange/20 hover:border-nutribowl-orange/60 bg-white px-3 py-1 rounded-full text-xs font-bold w-fit"
+              className="mt-2 flex items-center gap-1 text-nutribowl-orange hover:text-[var(--primary-hover)] transition-colors border border-nutribowl-orange/20 hover:border-nutribowl-orange/60 bg-white px-3 py-1 rounded-full text-xs font-bold w-fit"
             >
               <RotateCcw size={11} />
               <span>Replay Video</span>

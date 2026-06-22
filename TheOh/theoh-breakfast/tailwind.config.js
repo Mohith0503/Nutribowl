@@ -8,17 +8,17 @@ export default {
     extend: {
       colors: {
         nutribowl: {
-          cream: "#FFFDF9",
-          beige: "#FBF7F0",
-          brown: "#5C3D20",
-          orange: "#004700",
-          primary: "#004700",
-          softOrange: "#E8894A",
-          lightOrange: "#FFF0E0",
-          green: "#5C8A4A",
-          muted: "#9E8C7A",
-          border: "#E8D9C4",
-          text: "#2D1F0E",
+          cream: "var(--card)",
+          beige: "var(--background)",
+          brown: "var(--text)",
+          orange: "var(--primary)",
+          primary: "var(--primary)",
+          softOrange: "var(--accent)",
+          lightOrange: "var(--secondary)",
+          green: "var(--accent)",
+          muted: "var(--muted)",
+          border: "var(--border)",
+          text: "var(--text)",
         }
       },
       fontFamily: {

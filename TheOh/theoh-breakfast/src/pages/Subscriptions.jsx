@@ -36,7 +36,7 @@ export function Subscriptions() {
   return (
     <div className="bg-nutribowl-beige min-h-screen">
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#004700] via-[#005a00] to-[#003300] text-white py-24 md:py-32 px-4">
+      <section className="relative overflow-hidden bg-gradient-to-br from-[var(--primary)] via-[var(--primary-hover)] to-[var(--primary-hover)] text-white py-24 md:py-32 px-4">
         {/* Decorative blobs */}
         <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full -mr-48 -mt-48" />
         <div className="absolute bottom-0 left-0 w-72 h-72 bg-white/5 rounded-full -ml-36 -mb-36" />
@@ -74,7 +74,7 @@ export function Subscriptions() {
       <section className="bg-nutribowl-cream border-y border-nutribowl-border/40 py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#004700] bg-[#E8F5E9] px-3.5 py-1.5 rounded-full">
+            <span className="text-xs font-bold uppercase tracking-widest text-[var(--primary)] bg-[var(--accent-light)] px-3.5 py-1.5 rounded-full">
               How It Works
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-nutribowl-brown tracking-tight mt-4">
@@ -96,7 +96,7 @@ export function Subscriptions() {
                 transition={{ duration: 0.5, delay: idx * 0.15 }}
                 className="text-center p-8 bg-white rounded-3xl border border-nutribowl-border/40 shadow-premium hover:shadow-premium-hover transition-all group"
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#E8F5E9] text-[#004700] font-black text-2xl mb-6 group-hover:scale-110 transition-transform">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[var(--accent-light)] text-[var(--primary)] font-black text-2xl mb-6 group-hover:scale-110 transition-transform">
                   {item.step}
                 </div>
                 <h3 className="text-xl font-bold text-nutribowl-brown mb-3">{item.title}</h3>
@@ -110,7 +110,7 @@ export function Subscriptions() {
       {/* Benefits Grid */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#004700] bg-[#E8F5E9] px-3.5 py-1.5 rounded-full">
+          <span className="text-xs font-bold uppercase tracking-widest text-[var(--primary)] bg-[var(--accent-light)] px-3.5 py-1.5 rounded-full">
             Subscriber Benefits
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-nutribowl-brown tracking-tight mt-4">
@@ -126,9 +126,9 @@ export function Subscriptions() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.4, delay: idx * 0.08 }}
-              className="flex items-start gap-4 p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-nutribowl-border/30 hover:border-[#004700]/30 transition-colors group"
+              className="flex items-start gap-4 p-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-nutribowl-border/30 hover:border-[var(--primary)]/30 transition-colors group"
             >
-              <div className="p-3 rounded-xl bg-[#E8F5E9] text-[#004700] group-hover:scale-110 transition-transform flex-shrink-0">
+              <div className="p-3 rounded-xl bg-[var(--accent-light)] text-[var(--primary)] group-hover:scale-110 transition-transform flex-shrink-0">
                 {benefit.icon}
               </div>
               <div>
@@ -141,7 +141,7 @@ export function Subscriptions() {
       </section>
 
       {/* CTA Bottom */}
-      <section className="bg-gradient-to-r from-[#004700] to-[#003300] py-16 px-4 text-center text-white">
+      <section className="bg-gradient-to-r from-[var(--primary)] to-[var(--primary-hover)] py-16 px-4 text-center text-white">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-3xl sm:text-4xl font-black mb-4">
             Already have a subscription?
@@ -151,7 +151,7 @@ export function Subscriptions() {
           </p>
           <button
             onClick={() => navigate('/my-subscriptions')}
-            className="bg-white text-[#004700] hover:bg-green-50 font-bold px-8 py-4 rounded-full shadow-lg transition-all inline-flex items-center gap-2"
+            className="bg-white text-[var(--primary)] hover:bg-green-50 font-bold px-8 py-4 rounded-full shadow-lg transition-all inline-flex items-center gap-2"
           >
             Go to My Subscriptions →
           </button>

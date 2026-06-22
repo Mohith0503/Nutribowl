@@ -258,9 +258,9 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
         <div className="bg-white p-5 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
           <div>
             <p className="text-[10px] font-bold text-nutribowl-muted uppercase tracking-wider">Estimated MRR</p>
-            <h3 className="text-xl font-black text-[#004700] mt-1">{formatINR(Math.round(mrr))}</h3>
+            <h3 className="text-xl font-black text-[var(--primary)] mt-1">{formatINR(Math.round(mrr))}</h3>
           </div>
-          <div className="bg-[#E8F5E9] text-[#004700] p-2.5 rounded-2xl flex-shrink-0">
+          <div className="bg-[var(--accent-light)] text-[var(--primary)] p-2.5 rounded-2xl flex-shrink-0">
             <TrendingUp size={18} />
           </div>
         </div>
@@ -327,7 +327,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
       <div className="bg-white p-6 rounded-3xl border border-nutribowl-border/40 shadow-sm">
         <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 mb-5 border-b border-nutribowl-border/25 pb-3">
           <div className="flex items-center gap-2">
-            <Calendar size={18} className="text-[#004700]" />
+            <Calendar size={18} className="text-[var(--primary)]" />
             <h4 className="font-black text-base text-nutribowl-brown uppercase font-sans">Delivery Tracker (Next 7 Days)</h4>
           </div>
           {selectedDay && (
@@ -355,8 +355,8 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
                 onClick={() => setSelectedDay(isSelected ? null : d.date)}
                 className={`text-center p-4 rounded-2xl border transition-all active:scale-95 flex flex-col items-center justify-between min-h-[145px] ${
                   isSelected 
-                    ? 'bg-[#004700] border-[#004700] text-white shadow-md' 
-                    : 'bg-nutribowl-beige/40 border-nutribowl-border/30 text-nutribowl-brown hover:border-[#004700]/30 hover:bg-white'
+                    ? 'bg-[var(--primary)] border-[var(--primary)] text-white shadow-md' 
+                    : 'bg-nutribowl-beige/40 border-nutribowl-border/30 text-nutribowl-brown hover:border-[var(--primary)]/30 hover:bg-white'
                 }`}
               >
                 <div className="w-full">
@@ -365,7 +365,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
                 </div>
                 
                 <div className="my-2">
-                  <p className={`text-3xl font-black leading-none ${isSelected ? 'text-white' : 'text-[#004700]'}`}>{d.count}</p>
+                  <p className={`text-3xl font-black leading-none ${isSelected ? 'text-white' : 'text-[var(--primary)]'}`}>{d.count}</p>
                   <p className={`text-[9px] uppercase font-bold tracking-wider mt-1.5 ${isSelected ? 'text-green-200' : 'text-nutribowl-muted'}`}>deliveries</p>
                 </div>
 
@@ -403,7 +403,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
             placeholder="Search by customer name, order ID, phone..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 rounded-2xl border border-nutribowl-border bg-white text-sm outline-none focus:border-[#004700] focus:ring-1 focus:ring-[#E8F5E9] font-medium"
+            className="w-full pl-9 pr-4 py-2.5 rounded-2xl border border-nutribowl-border bg-white text-sm outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--accent-light)] font-medium"
           />
         </div>
 
@@ -414,7 +414,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
               type="date"
               value={dateFilter}
               onChange={(e) => setDateFilter(e.target.value)}
-              className="px-3 py-2 rounded-xl text-xs font-bold border border-nutribowl-border text-nutribowl-brown outline-none focus:border-[#004700] bg-white h-[38px]"
+              className="px-3 py-2 rounded-xl text-xs font-bold border border-nutribowl-border text-nutribowl-brown outline-none focus:border-[var(--primary)] bg-white h-[38px]"
             />
           </div>
           
@@ -427,8 +427,8 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
                   onClick={() => setStatusFilter(status)}
                   className={`px-3 py-2 rounded-xl text-xs font-bold border capitalize transition-all h-[38px] ${
                     statusFilter === status 
-                      ? 'bg-[#004700] border-[#004700] text-white shadow-sm' 
-                      : 'bg-white border-nutribowl-border text-nutribowl-brown hover:border-[#004700]/30'
+                      ? 'bg-[var(--primary)] border-[var(--primary)] text-white shadow-sm' 
+                      : 'bg-white border-nutribowl-border text-nutribowl-brown hover:border-[var(--primary)]/30'
                   }`}
                 >
                   {status === 'pending' ? 'Pending WA' : status}
@@ -440,7 +440,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
           <div className="self-end">
             <button
               onClick={handleExport}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black border border-[#004700] text-[#004700] bg-[#E8F5E9] hover:bg-[#C8E6C9] transition-colors h-[38px] shadow-sm uppercase tracking-wider"
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-xs font-black border border-[var(--primary)] text-[var(--primary)] bg-[var(--accent-light)] hover:bg-[#C8E6C9] transition-colors h-[38px] shadow-sm uppercase tracking-wider"
             >
               <Download size={12} /> Export CSV
             </button>
@@ -450,11 +450,11 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
 
       {/* Subscriptions List */}
       {selectedDay && (
-        <div className="bg-[#E8F5E9]/50 border border-[#004700]/25 rounded-2xl p-4 flex items-center justify-between">
-          <p className="text-xs text-[#004700] font-bold">
+        <div className="bg-[var(--accent-light)]/50 border border-[var(--primary)]/25 rounded-2xl p-4 flex items-center justify-between">
+          <p className="text-xs text-[var(--primary)] font-bold">
             📍 Showing active orders requiring delivery on <span className="font-black underline">{new Date(selectedDay).toLocaleDateString('en-IN', { dateStyle: 'medium' })}</span>
           </p>
-          <button onClick={() => setSelectedDay(null)} className="text-xs font-black text-[#004700] hover:underline uppercase font-sans">Show All</button>
+          <button onClick={() => setSelectedDay(null)} className="text-xs font-black text-[var(--primary)] hover:underline uppercase font-sans">Show All</button>
         </div>
       )}
 
@@ -477,7 +477,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
               {/* Summary Row */}
               <div className="p-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
                 <div className="flex items-center gap-4 flex-1 min-w-0">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#E8F5E9] flex items-center justify-center text-[#004700] font-black text-base shadow-sm">
+                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[var(--accent-light)] flex items-center justify-center text-[var(--primary)] font-black text-base shadow-sm">
                     {sub.customerName.charAt(0).toUpperCase()}
                   </div>
                   <div className="min-w-0 flex-1">
@@ -505,7 +505,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
                   </div>
                   <div className="text-right">
                     <p className="text-[10px] text-nutribowl-muted uppercase font-bold tracking-wider mb-0.5">Total Paid</p>
-                    <p className="font-black text-[#004700] text-base">{formatINR(sub.price)}</p>
+                    <p className="font-black text-[var(--primary)] text-base">{formatINR(sub.price)}</p>
                   </div>
 
                   <div className="flex items-center gap-1.5 self-end sm:self-auto w-full sm:w-auto justify-end">
@@ -530,7 +530,7 @@ export function AdminSubscriptionsTab({ orders = [], onStatusChange }) {
                     {sub.rawStatus === 'pending_whatsapp' ? (
                       <button 
                         onClick={() => handleResume(sub.id)} 
-                        className="p-2.5 rounded-xl bg-emerald-50 border border-[#004700]/30 text-emerald-700 hover:bg-emerald-100 transition-colors shadow-sm font-bold flex items-center gap-1" 
+                        className="p-2.5 rounded-xl bg-emerald-50 border border-[var(--primary)]/30 text-emerald-700 hover:bg-emerald-100 transition-colors shadow-sm font-bold flex items-center gap-1" 
                         title="Confirm & Activate Order"
                       >
                         <Check size={14} />

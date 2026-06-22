@@ -52,7 +52,7 @@ export function MealDetails() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-nutribowl-beige flex items-center justify-center">
-        <Loader2 className="animate-spin text-[#004700]" size={40} />
+        <Loader2 className="animate-spin text-[var(--primary)]" size={40} />
       </div>
     );
   }
@@ -98,13 +98,13 @@ export function MealDetails() {
           <p className="text-sm text-nutribowl-muted mb-6 leading-relaxed">{meal.desc}</p>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-[#E8F5E9] p-4 rounded-2xl flex items-center gap-3">
-              <div className="p-2 bg-white rounded-xl text-[#004700]">
+            <div className="bg-[var(--accent-light)] p-4 rounded-2xl flex items-center gap-3">
+              <div className="p-2 bg-white rounded-xl text-[var(--primary)]">
                 <Clock size={20} />
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-wider font-bold text-[#004700]/70">Prep Time</p>
-                <p className="font-black text-[#004700] text-sm">{meal.prepTime || '5 min'}</p>
+                <p className="text-[10px] uppercase tracking-wider font-bold text-[var(--primary)]/70">Prep Time</p>
+                <p className="font-black text-[var(--primary)] text-sm">{meal.prepTime || '5 min'}</p>
               </div>
             </div>
             <div className="bg-[#FFF3E0] p-4 rounded-2xl flex items-center gap-3">
@@ -155,7 +155,7 @@ export function MealDetails() {
               <div className="flex flex-wrap gap-2">
                 {meal.ingredients.map(ing => (
                   <span key={ing} className="px-3 py-1.5 rounded-full border border-nutribowl-border text-xs font-bold text-nutribowl-brown flex items-center gap-1.5">
-                    <CheckCircle2 size={12} className="text-[#004700]" /> {ing}
+                    <CheckCircle2 size={12} className="text-[var(--primary)]" /> {ing}
                   </span>
                 ))}
               </div>
@@ -220,13 +220,13 @@ function PlanCard({ planId, basePrice, onSelect, highlight }) {
       onClick={() => onSelect(planId)}
       className={`relative cursor-pointer rounded-3xl p-6 transition-all shadow-sm active:scale-95 group ${
         highlight 
-          ? 'bg-[#004700] border-[#004700] text-white hover:shadow-floating' 
-          : 'bg-white border border-nutribowl-border/50 hover:border-[#004700] hover:shadow-md'
+          ? 'bg-[var(--primary)] border-[var(--primary)] text-white hover:shadow-floating' 
+          : 'bg-white border border-nutribowl-border/50 hover:border-[var(--primary)] hover:shadow-md'
       }`}
     >
       {plan.badge && (
         <div className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
-          highlight ? 'bg-amber-400 text-[#004700]' : 'bg-[#E8F5E9] text-[#004700]'
+          highlight ? 'bg-amber-400 text-[var(--primary)]' : 'bg-[var(--accent-light)] text-[var(--primary)]'
         }`}>
           {plan.badge}
         </div>
@@ -255,7 +255,7 @@ function PlanCard({ planId, basePrice, onSelect, highlight }) {
             <span className="text-3xl font-black">{formatINR(pricing.final)}</span>
           </div>
           {plan.duration > 1 && (
-            <p className={`text-[10px] font-bold mt-2 ${highlight ? 'text-amber-300' : 'text-[#004700]'}`}>
+            <p className={`text-[10px] font-bold mt-2 ${highlight ? 'text-amber-300' : 'text-[var(--primary)]'}`}>
               Just {formatINR(Math.round(pricing.unitPrice))}/day
             </p>
           )}
@@ -264,8 +264,8 @@ function PlanCard({ planId, basePrice, onSelect, highlight }) {
         <button 
           className={`w-full py-3 rounded-xl font-bold transition-all text-sm uppercase tracking-wider ${
             highlight 
-              ? 'bg-white text-[#004700] group-hover:bg-amber-400 group-hover:text-[#004700]' 
-              : 'bg-[#004700] text-white group-hover:bg-[#003300]'
+              ? 'bg-white text-[var(--primary)] group-hover:bg-amber-400 group-hover:text-[var(--primary)]' 
+              : 'bg-[var(--primary)] text-white group-hover:bg-[var(--primary-hover)]'
           }`}
         >
           Select Plan

@@ -31,8 +31,8 @@ export function AdminLogin({ onLoginSuccess }) {
     <div className="min-h-screen bg-nutribowl-beige flex items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white/70 backdrop-blur-md p-8 sm:p-10 rounded-[32px] border border-nutribowl-border/60 shadow-xl">
         <div className="text-center">
-          <div className="mx-auto h-16 w-16 bg-[#E8F5E9] rounded-full flex items-center justify-center mb-4">
-            <ShieldAlert className="h-8 w-8 text-[#004700]" />
+          <div className="mx-auto h-16 w-16 bg-[var(--accent-light)] rounded-full flex items-center justify-center mb-4">
+            <ShieldAlert className="h-8 w-8 text-[var(--primary)]" />
           </div>
           <h2 className="text-3xl font-black text-nutribowl-brown tracking-tight">
             Nutribowl ADMIN
@@ -64,7 +64,7 @@ export function AdminLogin({ onLoginSuccess }) {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 disabled={loading}
-                className="w-full pl-10 pr-4 py-3.5 rounded-2xl border border-nutribowl-border bg-white text-nutribowl-text placeholder-nutribowl-muted/65 outline-none focus:border-[#004700] focus:ring-2 focus:ring-[#E8F5E9] transition-all text-sm disabled:opacity-50"
+                className="w-full pl-10 pr-4 py-3.5 rounded-2xl border border-nutribowl-border bg-white text-nutribowl-text placeholder-nutribowl-muted/65 outline-none focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--accent-light)] transition-all text-sm disabled:opacity-50"
               />
             </div>
           </div>
@@ -73,7 +73,7 @@ export function AdminLogin({ onLoginSuccess }) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-[#004700] hover:bg-[#003300] text-white py-3.5 px-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-green-100 hover:shadow-green-200 transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white py-3.5 px-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-green-100 hover:shadow-green-200 transition-all active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <span>{loading ? 'Verifying...' : 'Access Dashboard'}</span>
               {!loading && <ArrowRight size={16} />}

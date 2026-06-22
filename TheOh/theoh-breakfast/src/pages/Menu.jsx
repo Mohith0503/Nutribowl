@@ -346,7 +346,7 @@ export function Menu() {
                     </div>
                     <button
                       onClick={() => setStep(1)}
-                      className="text-xs font-black uppercase tracking-wider text-nutribowl-orange hover:text-[#B45014] bg-white border border-nutribowl-orange/20 hover:border-nutribowl-orange px-5 py-2.5 rounded-full transition-all shrink-0 active:scale-95 shadow-sm"
+                      className="text-xs font-black uppercase tracking-wider text-nutribowl-orange hover:text-[var(--primary-hover)] bg-white border border-nutribowl-orange/20 hover:border-nutribowl-orange px-5 py-2.5 rounded-full transition-all shrink-0 active:scale-95 shadow-sm"
                     >
                       Change Base
                     </button>
@@ -480,7 +480,7 @@ export function Menu() {
                       ) : (
                         <button
                           onClick={() => handleAddComboToCart(combo)}
-                          className="bg-[#004700] hover:bg-[#003300] text-white font-black text-xs uppercase tracking-wider px-5 py-3 rounded-full flex items-center gap-1.5 active:scale-95 shadow-md transition-all"
+                          className="bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-black text-xs uppercase tracking-wider px-5 py-3 rounded-full flex items-center gap-1.5 active:scale-95 shadow-md transition-all"
                         >
                           <ShoppingCart size={13} />
                           <span>Add To Cart</span>
@@ -537,7 +537,7 @@ export function Menu() {
 
                 <button
                   onClick={handleAddToCart}
-                  className="bg-nutribowl-orange hover:bg-[#B45014] text-white font-black px-8 py-3.5 rounded-full shadow-premium flex items-center gap-2 active:scale-95 transition-all text-sm uppercase tracking-wider shrink-0"
+                  className="bg-nutribowl-orange hover:bg-[var(--primary-hover)] text-white font-black px-8 py-3.5 rounded-full shadow-premium flex items-center gap-2 active:scale-95 transition-all text-sm uppercase tracking-wider shrink-0"
                 >
                   <ShoppingCart size={16} />
                   <span>Add To Cart</span>
@@ -556,7 +556,7 @@ export function Menu() {
             initial={{ opacity: 0, scale: 0.8, y: -50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: -50 }}
-            className="fixed top-24 left-1/2 -translate-x-1/2 bg-[#2E7D32] border border-[#A5D6A7] text-white py-3.5 px-6 rounded-2xl shadow-xl flex items-center gap-2.5 z-50 font-bold text-sm tracking-wide select-none"
+            className="fixed top-24 left-1/2 -translate-x-1/2 bg-[var(--accent-dark)] border border-[var(--accent)] text-white py-3.5 px-6 rounded-2xl shadow-xl flex items-center gap-2.5 z-50 font-bold text-sm tracking-wide select-none"
           >
             <span className="p-1 rounded-full bg-white/20">
               <Check size={16} strokeWidth={3} />
@@ -564,7 +564,7 @@ export function Menu() {
             <span>{successMessage}</span>
             <button 
               onClick={() => { setIsSuccessAdded(false); setIsCartOpen(true); }}
-              className="underline text-[#E8F5E9] hover:text-white ml-2 text-xs uppercase font-extrabold tracking-wider"
+              className="underline text-[var(--accent-light)] hover:text-white ml-2 text-xs uppercase font-extrabold tracking-wider"
             >
               Checkout Now →
             </button>

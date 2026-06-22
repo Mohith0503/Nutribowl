@@ -94,7 +94,7 @@ export const COMBOS = [
 
 export const TAG_COLORS = {
   "High Protein": { bg: "bg-[#FFF3E0]", text: "text-[#E65100]", border: "border-[#FFCC80]" },
-  "Fiber Rich": { bg: "bg-[#E8F5E9]", text: "text-[#2E7D32]", border: "border-[#A5D6A7]" },
+  "Fiber Rich": { bg: "bg-[var(--accent-light)]", text: "text-[var(--accent-dark)]", border: "border-[var(--accent)]" },
   "Fresh Fruits": { bg: "bg-[#FCE4EC]", text: "text-[#AD1457]", border: "border-[#F48FB1]" },
   "Healthy Fats": { bg: "bg-[#FFF8E1]", text: "text-[#F57F17]", border: "border-[#FFE082]" },
   "Energy Booster": { bg: "bg-[#FFFDE7]", text: "text-[#F57F17]", border: "border-[#FFF59D]" },

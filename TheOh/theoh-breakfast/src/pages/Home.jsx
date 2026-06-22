@@ -82,7 +82,7 @@ export function Home() {
       <section className="bg-nutribowl-cream border-y border-nutribowl-border/40 py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-widest text-nutribowl-green bg-[#E8F5E9] text-[#2E7D32] px-3.5 py-1.5 rounded-full">
+            <span className="text-xs font-bold uppercase tracking-widest text-nutribowl-green bg-[var(--accent-light)] text-[var(--accent-dark)] px-3.5 py-1.5 rounded-full">
               Popular Combos
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-nutribowl-brown tracking-tight mt-4">
@@ -173,7 +173,7 @@ export function Home() {
                           addComboToCart(meal);
                           setIsCartOpen(true);
                         }}
-                        className="bg-[#004700] hover:bg-[#003300] text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all group-hover:scale-105"
+                        className="bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all group-hover:scale-105"
                       >
                         Subscribe →
                       </button>
@@ -195,7 +195,7 @@ export function Home() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-xs font-bold uppercase tracking-widest text-[#004700] bg-[#E8F5E9] px-3.5 py-1.5 rounded-full">
+          <span className="text-xs font-bold uppercase tracking-widest text-[var(--primary)] bg-[var(--accent-light)] px-3.5 py-1.5 rounded-full">
             ✨ New: Subscription Plans
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-nutribowl-brown tracking-tight mt-4">
@@ -207,24 +207,24 @@ export function Home() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
             <div className="bg-white/80 backdrop-blur-sm border border-nutribowl-border/40 rounded-2xl px-6 py-4 text-center shadow-premium">
-              <p className="text-2xl font-black text-[#004700]">₹149</p>
+              <p className="text-2xl font-black text-[var(--primary)]">₹149</p>
               <p className="text-xs text-nutribowl-muted font-bold uppercase tracking-wider mt-1">Tomorrow</p>
             </div>
-            <div className="bg-white/80 backdrop-blur-sm border border-[#004700]/30 rounded-2xl px-6 py-4 text-center shadow-premium relative">
-              <span className="absolute -top-2 -right-2 bg-[#004700] text-white text-[9px] font-bold px-2 py-0.5 rounded-full">Popular</span>
-              <p className="text-2xl font-black text-[#004700]">₹899</p>
+            <div className="bg-white/80 backdrop-blur-sm border border-[var(--primary)]/30 rounded-2xl px-6 py-4 text-center shadow-premium relative">
+              <span className="absolute -top-2 -right-2 bg-[var(--primary)] text-white text-[9px] font-bold px-2 py-0.5 rounded-full">Popular</span>
+              <p className="text-2xl font-black text-[var(--primary)]">₹899</p>
               <p className="text-xs text-nutribowl-muted font-bold uppercase tracking-wider mt-1">7 Days</p>
             </div>
             <div className="bg-white/80 backdrop-blur-sm border border-nutribowl-border/40 rounded-2xl px-6 py-4 text-center shadow-premium relative">
               <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">Best Value</span>
-              <p className="text-2xl font-black text-[#004700]">₹3,499</p>
+              <p className="text-2xl font-black text-[var(--primary)]">₹3,499</p>
               <p className="text-xs text-nutribowl-muted font-bold uppercase tracking-wider mt-1">30 Days</p>
             </div>
           </div>
 
           <button
             onClick={() => navigate('/subscriptions')}
-            className="mt-8 bg-[#004700] hover:bg-[#003300] text-white font-bold px-8 py-4 rounded-full shadow-floating active:scale-98 transition-all inline-flex items-center gap-2"
+            className="mt-8 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white font-bold px-8 py-4 rounded-full shadow-floating active:scale-98 transition-all inline-flex items-center gap-2"
           >
             Explore Plans →
           </button>
@@ -237,10 +237,10 @@ export function Home() {
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/5 rounded-full -ml-16 -mb-16" />
 
         <div className="relative z-10 max-w-2xl mx-auto">
-          <h2 className="text-3xl sm:text-5xl font-black mb-4 text-[#004700]">
+          <h2 className="text-3xl sm:text-5xl font-black mb-4 text-[var(--primary)]">
             Ready for a healthier morning?
           </h2>
-          <p className="text-[#004700] text-base sm:text-lg mb-8 font-light">
+          <p className="text-[var(--primary)] text-base sm:text-lg mb-8 font-light">
             Build your tailored breakfast oatmeal bowl or artisanal toast in under 2 minutes. Delighted morning energy guaranteed!
           </p>
           <button

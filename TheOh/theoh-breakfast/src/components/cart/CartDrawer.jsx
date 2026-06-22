@@ -8,6 +8,7 @@ import { formatINR } from '../../utils/currency';
 import { api } from '../../services/api';
 import { placeOrderWhatsApp } from '../../services/whatsapp';
 import { SUBSCRIPTION_PLANS } from '../../utils/pricing';
+import { getMinStartDate } from '../../utils/date';
 
 export function CartDrawer() {
   const {
@@ -28,7 +29,7 @@ export function CartDrawer() {
     phone: '',
     address: '',
     timeSlot: '6:00-7:00 AM', // Default to first slot value
-    startDate: '',
+    startDate: getMinStartDate(),
     notes: '',
   });
 
@@ -96,12 +97,6 @@ export function CartDrawer() {
   };
 
   const handleCheckout = async () => {
-    const hr = new Date().getHours();
-    const isTimeValid = hr >= 13 && hr < 22;
-    if (!isTimeValid) {
-      setSubmitError('Ordering is closed. Orders are only accepted between 1:00 PM and 10:00 PM.');
-      return;
-    }
     if (!validateForm()) return;
 
     setIsSubmitting(true);
@@ -192,7 +187,7 @@ export function CartDrawer() {
       phone: '',
       address: '',
       timeSlot: '6:00-7:00 AM',
-      startDate: '',
+      startDate: getMinStartDate(),
       notes: '',
     });
   };
@@ -220,19 +215,19 @@ export function CartDrawer() {
                 transition={{ type: 'tween', duration: 0.35 }}
                 className="fixed right-0 top-0 bottom-0 w-full max-w-lg bg-white z-50 shadow-2xl flex flex-col p-6 items-center justify-center text-center"
               >
-                <div className="w-20 h-20 rounded-full bg-[#E8F5E9] flex items-center justify-center mb-6">
+                <div className="w-20 h-20 rounded-full bg-[var(--accent-light)] flex items-center justify-center mb-6">
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 200, damping: 15 }}
                   >
-                    <svg className="w-10 h-10 text-[#004700]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-10 h-10 text-[var(--primary)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                     </svg>
                   </motion.div>
                 </div>
 
-                <h2 className="text-2xl font-black text-[#004700] uppercase tracking-wide">
+                <h2 className="text-2xl font-black text-[var(--primary)] uppercase tracking-wide">
                   Order Recorded!
                 </h2>
                 
@@ -247,7 +242,7 @@ export function CartDrawer() {
                   </div>
                   <div className="flex justify-between pt-1">
                     <span className="font-bold text-nutribowl-muted text-xs uppercase">Grand Total</span>
-                    <span className="font-black text-[#004700] text-sm">{formatINR(placedOrder.total_price)}</span>
+                    <span className="font-black text-[var(--primary)] text-sm">{formatINR(placedOrder.total_price)}</span>
                   </div>
                 </div>
 
@@ -313,7 +308,7 @@ export function CartDrawer() {
                   <div className="flex items-center gap-2 text-nutribowl-brown">
                     <ShoppingBag
                       size={20}
-                      className="text-[#004700]"
+                      className="text-[var(--primary)]"
                     />
                     <h2 className="text-lg font-black uppercase tracking-wide">
                       Your Breakfast Basket
@@ -335,10 +330,10 @@ export function CartDrawer() {
                 <div className="flex-1 overflow-y-auto p-4 sm:p-5 space-y-5">
                   {cartItems.length === 0 ? (
                     <div className="h-full flex flex-col items-center justify-center text-center py-20">
-                      <div className="w-20 h-20 rounded-full bg-[#E8F5E9] flex items-center justify-center">
+                      <div className="w-20 h-20 rounded-full bg-[var(--accent-light)] flex items-center justify-center">
                         <ShoppingBag
                           size={34}
-                          className="text-[#004700]"
+                          className="text-[var(--primary)]"
                         />
                       </div>
 
@@ -352,7 +347,7 @@ export function CartDrawer() {
 
                       <button
                         onClick={() => setIsCartOpen(false)}
-                        className="mt-5 bg-[#004700] hover:bg-[#003300] text-white px-6 py-3 rounded-full font-bold transition-all"
+                        className="mt-5 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white px-6 py-3 rounded-full font-bold transition-all"
                       >
                         Explore Menu
                       </button>
@@ -404,7 +399,7 @@ export function CartDrawer() {
                                       </div>
 
                                       {isSignature ? (
-                                        <span className="inline-block bg-[#E8F5E9] text-[#004700] text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md mt-1 shadow-sm">
+                                        <span className="inline-block bg-[var(--accent-light)] text-[var(--primary)] text-[9px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md mt-1 shadow-sm">
                                           ⭐ Signature Dish
                                         </span>
                                       ) : item.addons && item.addons.length > 0 ? (
@@ -431,7 +426,7 @@ export function CartDrawer() {
                                         size="sm"
                                       />
 
-                                      <span className="font-black text-[#004700] text-lg">
+                                      <span className="font-black text-[var(--primary)] text-lg">
                                         {formatINR(dailyItemCost * item.qty)}/day
                                       </span>
                                     </div>
@@ -463,12 +458,12 @@ export function CartDrawer() {
                                     onClick={() => setSelectedPlan(plan.id)}
                                     className={`flex flex-col items-center justify-between p-3.5 rounded-2xl border-2 transition-all relative min-h-[105px] ${
                                       isSel
-                                        ? 'border-[#004700] bg-[#E8F5E9] text-[#004700]'
-                                        : 'border-nutribowl-border bg-white text-nutribowl-muted hover:border-[#004700]/30'
+                                        ? 'border-[var(--primary)] bg-[var(--accent-light)] text-[var(--primary)]'
+                                        : 'border-nutribowl-border bg-white text-nutribowl-muted hover:border-[var(--primary)]/30'
                                     }`}
                                   >
                                     {plan.badge && (
-                                      <span className="absolute -top-2 bg-[#004700] text-white text-[8px] font-black uppercase px-2 py-0.5 rounded-full whitespace-nowrap shadow-sm">
+                                      <span className="absolute -top-2 bg-[var(--primary)] text-white text-[8px] font-black uppercase px-2 py-0.5 rounded-full whitespace-nowrap shadow-sm">
                                         {plan.badge.includes('Best') ? 'Best Value' : 'Popular'}
                                       </span>
                                     )}
@@ -498,7 +493,7 @@ export function CartDrawer() {
                         <div className="space-y-4">
                           <button
                             onClick={() => setCheckoutMode(false)}
-                            className="text-xs font-extrabold text-[#004700] bg-white border border-[#004700]/20 px-3 py-1.5 rounded-lg hover:bg-[#E8F5E9]/40 transition-colors"
+                            className="text-xs font-extrabold text-[var(--primary)] bg-white border border-[var(--primary)]/20 px-3 py-1.5 rounded-lg hover:bg-[var(--accent-light)]/40 transition-colors"
                           >
                             ← Back to Items & Plans
                           </button>
@@ -510,7 +505,7 @@ export function CartDrawer() {
                             </h4>
                             <div className="flex justify-between items-center text-sm">
                               <span className="font-extrabold text-nutribowl-brown">Basket Subscription Plan</span>
-                              <span className="bg-[#E8F5E9] text-[#004700] font-black text-xs px-2.5 py-1 rounded-full uppercase tracking-wider">
+                              <span className="bg-[var(--accent-light)] text-[var(--primary)] font-black text-xs px-2.5 py-1 rounded-full uppercase tracking-wider">
                                 {planDetails.name} Plan
                               </span>
                             </div>
@@ -590,7 +585,7 @@ export function CartDrawer() {
 
                       <div className="flex justify-between text-xs text-nutribowl-muted font-medium">
                         <span>Morning Delivery</span>
-                        <span className="font-bold text-[#004700]">
+                        <span className="font-bold text-[var(--primary)]">
                           FREE
                         </span>
                       </div>
@@ -599,7 +594,7 @@ export function CartDrawer() {
                         <span className="font-black text-lg text-nutribowl-brown uppercase tracking-wider">
                           Grand Total
                         </span>
-                        <span className="font-black text-2xl text-[#004700]">
+                        <span className="font-black text-2xl text-[var(--primary)]">
                           {formatINR(finalPrice)}
                         </span>
                       </div>
@@ -612,39 +607,26 @@ export function CartDrawer() {
                     )}
 
                     {/* Action Button */}
-                    {(() => {
-                      const hr = new Date().getHours();
-                      const isTimeValid = hr >= 13 && hr < 22;
-                      return (
-                        <div className="space-y-3 w-full">
-                          {!isTimeValid && (
-                            <div className="bg-amber-50 border border-amber-200 text-amber-800 text-xs font-semibold p-3.5 rounded-2xl text-center space-y-1">
-                              <p className="font-bold uppercase tracking-wider">Ordering is Closed</p>
-                              <p className="text-nutribowl-muted">Ordering is currently closed. Please check back later!</p>
-                            </div>
-                          )}
-                          {!checkoutMode ? (
-                            <button
-                              onClick={() => setCheckoutMode(true)}
-                              disabled={!isTimeValid}
-                              className="w-full bg-[#004700] hover:bg-[#003300] disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-98"
-                            >
-                              <span>{isTimeValid ? 'Configure Delivery Info' : 'Ordering is Closed'}</span>
-                              {isTimeValid && <ArrowRight size={14} />}
-                            </button>
-                          ) : (
-                            <button
-                              onClick={handleCheckout}
-                              disabled={isSubmitting || !isTimeValid}
-                              className="w-full bg-[#004700] hover:bg-[#003300] disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-98"
-                            >
-                              <span>{isSubmitting ? 'Recording Order...' : 'Place Order & Get WhatsApp Link'}</span>
-                              {!isSubmitting && <ArrowRight size={14} />}
-                            </button>
-                          )}
-                        </div>
-                      );
-                    })()}
+                    <div className="space-y-3 w-full">
+                      {!checkoutMode ? (
+                        <button
+                          onClick={() => setCheckoutMode(true)}
+                          className="w-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-98"
+                        >
+                          <span>Configure Delivery Info</span>
+                          <ArrowRight size={14} />
+                        </button>
+                      ) : (
+                        <button
+                          onClick={handleCheckout}
+                          disabled={isSubmitting}
+                          className="w-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed text-white py-3.5 rounded-2xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-md transition-all active:scale-98"
+                        >
+                          <span>{isSubmitting ? 'Recording Order...' : 'Place Order & Get WhatsApp Link'}</span>
+                          {!isSubmitting && <ArrowRight size={14} />}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 )}
               </motion.div>

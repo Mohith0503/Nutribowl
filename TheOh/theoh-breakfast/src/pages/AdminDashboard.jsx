@@ -389,12 +389,12 @@ export function AdminDashboard({ onLogout }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center gap-3">
-              <div className="bg-[#004700] text-white p-2 rounded-2xl">
+              <div className="bg-[var(--primary)] text-white p-2 rounded-2xl">
                 <ShoppingBag size={20} />
               </div>
               <div>
                 <span className="font-black text-nutribowl-brown text-lg uppercase tracking-wide">Nutribowl</span>
-                <span className="text-xs bg-[#E8F5E9] text-[#004700] ml-2 px-2.5 py-0.5 rounded-full font-black uppercase">Admin Panel</span>
+                <span className="text-xs bg-[var(--accent-light)] text-[var(--primary)] ml-2 px-2.5 py-0.5 rounded-full font-black uppercase">Admin Panel</span>
                 {(() => {
                   const hr = new Date().getHours();
                   const isOpen = hr >= 13 && hr < 22;
@@ -418,7 +418,7 @@ export function AdminDashboard({ onLogout }) {
                   onClick={requestNotificationPermission}
                   className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl font-bold text-xs border transition-all ${
                     notificationPermission === 'granted'
-                      ? 'bg-[#E8F5E9] border-[#A5D6A7] text-[#004700]'
+                      ? 'bg-[var(--accent-light)] border-[var(--accent)] text-[var(--primary)]'
                       : notificationPermission === 'denied'
                       ? 'bg-red-50 border-red-200 text-red-600 cursor-not-allowed'
                       : 'bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100 animate-pulse'
@@ -448,7 +448,7 @@ export function AdminDashboard({ onLogout }) {
                 className="p-2 rounded-xl text-nutribowl-muted hover:bg-nutribowl-beige/50 transition-colors"
                 title="Refresh Data"
               >
-                <RefreshCw size={18} className={loading ? "animate-spin text-[#004700]" : ""} />
+                <RefreshCw size={18} className={loading ? "animate-spin text-[var(--primary)]" : ""} />
               </button>
               
               <button
@@ -475,9 +475,9 @@ export function AdminDashboard({ onLogout }) {
             <div className="bg-white p-6 rounded-3xl border border-nutribowl-border/40 shadow-sm flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold text-nutribowl-muted uppercase tracking-wider">Completed Revenue</p>
-                <h3 className="text-2xl font-black text-[#004700] mt-1">{formatINR(stats.summary.totalRevenue)}</h3>
+                <h3 className="text-2xl font-black text-[var(--primary)] mt-1">{formatINR(stats.summary.totalRevenue)}</h3>
               </div>
-              <div className="bg-[#E8F5E9] text-[#004700] p-3 rounded-2xl">
+              <div className="bg-[var(--accent-light)] text-[var(--primary)] p-3 rounded-2xl">
                 <TrendingUp size={20} />
               </div>
             </div>
@@ -520,7 +520,7 @@ export function AdminDashboard({ onLogout }) {
             onClick={() => setActiveTab('subscriptions')}
             className={`py-3 px-6 font-bold text-sm tracking-wide border-b-2 transition-all uppercase shrink-0 ${
               activeTab === 'subscriptions' 
-                ? 'border-[#004700] text-[#004700]' 
+                ? 'border-[var(--primary)] text-[var(--primary)]' 
                 : 'border-transparent text-nutribowl-muted hover:text-nutribowl-brown'
             }`}
           >
@@ -530,7 +530,7 @@ export function AdminDashboard({ onLogout }) {
             onClick={() => setActiveTab('analytics')}
             className={`py-3 px-6 font-bold text-sm tracking-wide border-b-2 transition-all uppercase shrink-0 ${
               activeTab === 'analytics' 
-                ? 'border-[#004700] text-[#004700]' 
+                ? 'border-[var(--primary)] text-[var(--primary)]' 
                 : 'border-transparent text-nutribowl-muted hover:text-nutribowl-brown'
             }`}
           >
@@ -540,7 +540,7 @@ export function AdminDashboard({ onLogout }) {
             onClick={() => setActiveTab('menu')}
             className={`py-3 px-6 font-bold text-sm tracking-wide border-b-2 transition-all uppercase shrink-0 ${
               activeTab === 'menu' 
-                ? 'border-[#004700] text-[#004700]' 
+                ? 'border-[var(--primary)] text-[var(--primary)]' 
                 : 'border-transparent text-nutribowl-muted hover:text-nutribowl-brown'
             }`}
           >
@@ -559,7 +559,7 @@ export function AdminDashboard({ onLogout }) {
         {/* Loading Spinner */}
         {loading ? (
           <div className="py-20 flex flex-col items-center justify-center">
-            <RefreshCw size={36} className="animate-spin text-[#004700] mb-4" />
+            <RefreshCw size={36} className="animate-spin text-[var(--primary)] mb-4" />
             <p className="text-sm font-bold text-nutribowl-muted">Fetching latest database records...</p>
           </div>
         ) : (
@@ -570,7 +570,7 @@ export function AdminDashboard({ onLogout }) {
                 
                 {/* Column 1: Time Slot Demands */}
                 <div className="bg-white p-6 rounded-[32px] border border-nutribowl-border/40 shadow-sm space-y-6">
-                  <div className="flex items-center gap-2 text-[#004700] mb-2 border-b border-nutribowl-border/25 pb-3">
+                  <div className="flex items-center gap-2 text-[var(--primary)] mb-2 border-b border-nutribowl-border/25 pb-3">
                     <Calendar size={18} />
                     <h4 className="font-black text-base text-nutribowl-brown uppercase">Delivery Slot Demands</h4>
                   </div>
@@ -608,7 +608,7 @@ export function AdminDashboard({ onLogout }) {
 
                 {/* Column 2: Popular Base Bowls */}
                 <div className="bg-white p-6 rounded-[32px] border border-nutribowl-border/40 shadow-sm space-y-6">
-                  <div className="flex items-center gap-2 text-[#004700] mb-2 border-b border-nutribowl-border/25 pb-3">
+                  <div className="flex items-center gap-2 text-[var(--primary)] mb-2 border-b border-nutribowl-border/25 pb-3">
                     <ShoppingBag size={18} />
                     <h4 className="font-black text-base text-nutribowl-brown uppercase">Top Selling Base Bowls</h4>
                   </div>
@@ -622,12 +622,12 @@ export function AdminDashboard({ onLogout }) {
                         .map(([base, qty], idx) => (
                           <div key={base} className="flex justify-between items-center text-xs font-bold py-2 border-b border-nutribowl-border/10 last:border-0">
                             <span className="flex items-center gap-2">
-                              <span className="w-5 h-5 rounded-lg bg-nutribowl-beige flex items-center justify-center text-[10px] text-[#004700] font-black">
+                              <span className="w-5 h-5 rounded-lg bg-nutribowl-beige flex items-center justify-center text-[10px] text-[var(--primary)] font-black">
                                 #{idx + 1}
                               </span>
                               <span className="text-nutribowl-brown font-black">{base}</span>
                             </span>
-                            <span className="bg-[#E8F5E9] text-[#004700] px-2.5 py-1 rounded-full text-[10px]">
+                            <span className="bg-[var(--accent-light)] text-[var(--primary)] px-2.5 py-1 rounded-full text-[10px]">
                               {qty} sold
                             </span>
                           </div>
@@ -638,7 +638,7 @@ export function AdminDashboard({ onLogout }) {
 
                 {/* Column 3: Popular Toppings */}
                 <div className="bg-white p-6 rounded-[32px] border border-nutribowl-border/40 shadow-sm space-y-6">
-                  <div className="flex items-center gap-2 text-[#004700] mb-2 border-b border-nutribowl-border/25 pb-3">
+                  <div className="flex items-center gap-2 text-[var(--primary)] mb-2 border-b border-nutribowl-border/25 pb-3">
                     <TrendingUp size={18} />
                     <h4 className="font-black text-base text-nutribowl-brown uppercase">Top Requested Toppings</h4>
                   </div>
@@ -690,7 +690,7 @@ export function AdminDashboard({ onLogout }) {
                       placeholder="Search menu items..."
                       value={menuSearchQuery}
                       onChange={(e) => setMenuSearchQuery(e.target.value)}
-                      className="w-full pl-9 pr-4 py-2.5 rounded-2xl border border-nutribowl-border bg-white text-sm outline-none focus:border-[#004700] focus:ring-1 focus:ring-[#E8F5E9] font-medium"
+                      className="w-full pl-9 pr-4 py-2.5 rounded-2xl border border-nutribowl-border bg-white text-sm outline-none focus:border-[var(--primary)] focus:ring-1 focus:ring-[var(--accent-light)] font-medium"
                     />
                   </div>
 
@@ -700,7 +700,7 @@ export function AdminDashboard({ onLogout }) {
                       onClick={() => setMenuSubTab('bases')}
                       className={`flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-bold border transition-all ${
                         menuSubTab === 'bases'
-                          ? 'bg-[#004700] border-[#004700] text-white'
+                          ? 'bg-[var(--primary)] border-[var(--primary)] text-white'
                           : 'bg-white border-nutribowl-border text-nutribowl-brown hover:border-nutribowl-orange/30'
                       }`}
                     >
@@ -710,7 +710,7 @@ export function AdminDashboard({ onLogout }) {
                       onClick={() => setMenuSubTab('addons')}
                       className={`flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-bold border transition-all ${
                         menuSubTab === 'addons'
-                          ? 'bg-[#004700] border-[#004700] text-white'
+                          ? 'bg-[var(--primary)] border-[var(--primary)] text-white'
                           : 'bg-white border-nutribowl-border text-nutribowl-brown hover:border-nutribowl-orange/30'
                       }`}
                     >
@@ -720,7 +720,7 @@ export function AdminDashboard({ onLogout }) {
                       onClick={() => setMenuSubTab('combos')}
                       className={`flex-1 sm:flex-none px-4 py-2 rounded-xl text-xs font-bold border transition-all ${
                         menuSubTab === 'combos'
-                          ? 'bg-[#004700] border-[#004700] text-white'
+                          ? 'bg-[var(--primary)] border-[var(--primary)] text-white'
                           : 'bg-white border-nutribowl-border text-nutribowl-brown hover:border-nutribowl-orange/30'
                       }`}
                     >
@@ -731,7 +731,7 @@ export function AdminDashboard({ onLogout }) {
                   {/* Add item button */}
                   <button
                     onClick={handleOpenAddModal}
-                    className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-5 py-2.5 bg-nutribowl-orange hover:bg-[#B45014] text-white font-black rounded-2xl text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg active:scale-95 shrink-0"
+                    className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-5 py-2.5 bg-nutribowl-orange hover:bg-[var(--primary-hover)] text-white font-black rounded-2xl text-xs uppercase tracking-wider transition-all shadow-md hover:shadow-lg active:scale-95 shrink-0"
                   >
                     <Plus size={14} strokeWidth={3} />
                     <span>Add New Item</span>
@@ -741,7 +741,7 @@ export function AdminDashboard({ onLogout }) {
                 {/* Sub-tab Views */}
                 {menuLoadingState ? (
                   <div className="py-20 flex flex-col items-center justify-center">
-                    <RefreshCw size={28} className="animate-spin text-[#004700] mb-3" />
+                    <RefreshCw size={28} className="animate-spin text-[var(--primary)] mb-3" />
                     <p className="text-xs font-bold text-nutribowl-muted">Updating menu database...</p>
                   </div>
                 ) : (
@@ -797,7 +797,7 @@ export function AdminDashboard({ onLogout }) {
                                       type="button"
                                       onClick={() => handleToggleStock(base)}
                                       className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                                        base.inStock !== false ? 'bg-[#004700]' : 'bg-gray-300'
+                                        base.inStock !== false ? 'bg-[var(--primary)]' : 'bg-gray-300'
                                       }`}
                                     >
                                       <span
@@ -885,7 +885,7 @@ export function AdminDashboard({ onLogout }) {
                                       type="button"
                                       onClick={() => handleToggleStock(combo)}
                                       className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                                        combo.inStock !== false ? 'bg-[#004700]' : 'bg-gray-300'
+                                        combo.inStock !== false ? 'bg-[var(--primary)]' : 'bg-gray-300'
                                       }`}
                                     >
                                       <span
@@ -973,7 +973,7 @@ export function AdminDashboard({ onLogout }) {
                                           type="button"
                                           onClick={() => handleToggleStock(addon)}
                                           className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                                            addon.inStock !== false ? 'bg-[#004700]' : 'bg-gray-300'
+                                            addon.inStock !== false ? 'bg-[var(--primary)]' : 'bg-gray-300'
                                           }`}
                                         >
                                           <span
@@ -1038,7 +1038,7 @@ export function AdminDashboard({ onLogout }) {
                 className="absolute bottom-0 left-0 h-1 bg-nutribowl-orange"
               />
               
-              <div className="bg-[#E8F5E9] text-[#004700] p-2 rounded-xl flex-shrink-0 self-start">
+              <div className="bg-[var(--accent-light)] text-[var(--primary)] p-2 rounded-xl flex-shrink-0 self-start">
                 <ShoppingBag size={18} />
               </div>
               <div className="flex-grow pr-4">
@@ -1097,7 +1097,7 @@ export function AdminDashboard({ onLogout }) {
                         disabled={!!editingItem}
                         checked={menuFormData.type === 'base'}
                         onChange={() => setMenuFormData(prev => ({ ...prev, type: 'base' }))}
-                        className="text-[#004700] focus:ring-[#004700]"
+                        className="text-[var(--primary)] focus:ring-[var(--primary)]"
                       />
                       <span>Base Bowl / Bread</span>
                     </label>
@@ -1107,7 +1107,7 @@ export function AdminDashboard({ onLogout }) {
                         disabled={!!editingItem}
                         checked={menuFormData.type === 'addon'}
                         onChange={() => setMenuFormData(prev => ({ ...prev, type: 'addon' }))}
-                        className="text-[#004700] focus:ring-[#004700]"
+                        className="text-[var(--primary)] focus:ring-[var(--primary)]"
                       />
                       <span>Addon / Topping</span>
                     </label>
@@ -1117,7 +1117,7 @@ export function AdminDashboard({ onLogout }) {
                         disabled={!!editingItem}
                         checked={menuFormData.type === 'combo'}
                         onChange={() => setMenuFormData(prev => ({ ...prev, type: 'combo' }))}
-                        className="text-[#004700] focus:ring-[#004700]"
+                        className="text-[var(--primary)] focus:ring-[var(--primary)]"
                       />
                       <span>Signature Dish</span>
                     </label>
@@ -1131,7 +1131,7 @@ export function AdminDashboard({ onLogout }) {
                     <select
                       value={menuFormData.category}
                       onChange={(e) => setMenuFormData(prev => ({ ...prev, category: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[#004700] text-nutribowl-brown font-bold"
+                      className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[var(--primary)] text-nutribowl-brown font-bold"
                     >
                       <option value="Spreads & Sweeteners">Spreads & Sweeteners</option>
                       <option value="Fresh Fruits">Fresh Fruits</option>
@@ -1150,7 +1150,7 @@ export function AdminDashboard({ onLogout }) {
                       placeholder="e.g. Best for Gym, High Energy"
                       value={menuFormData.tag || ''}
                       onChange={(e) => setMenuFormData(prev => ({ ...prev, tag: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[#004700] text-nutribowl-brown font-bold placeholder-nutribowl-muted/65 bg-white"
+                      className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[var(--primary)] text-nutribowl-brown font-bold placeholder-nutribowl-muted/65 bg-white"
                     />
                   </div>
                 )}
@@ -1163,7 +1163,7 @@ export function AdminDashboard({ onLogout }) {
                       value={menuFormData.base}
                       required
                       onChange={(e) => setMenuFormData(prev => ({ ...prev, base: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[#004700] text-nutribowl-brown font-bold"
+                      className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[var(--primary)] text-nutribowl-brown font-bold"
                     >
                       <option value="">-- Choose a Base --</option>
                       {menuBases.map(b => (
@@ -1194,7 +1194,7 @@ export function AdminDashboard({ onLogout }) {
                                   return { ...prev, addons: newList };
                                 });
                               }}
-                              className="text-[#004700] focus:ring-[#004700] rounded"
+                              className="text-[var(--primary)] focus:ring-[var(--primary)] rounded"
                             />
                             <span>{addon.name}</span>
                           </label>
@@ -1213,7 +1213,7 @@ export function AdminDashboard({ onLogout }) {
                     placeholder="e.g. Blueberries, Whole Grain Bread"
                     value={menuFormData.name}
                     onChange={(e) => setMenuFormData(prev => ({ ...prev, name: e.target.value }))}
-                    className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[#004700] text-nutribowl-brown font-bold placeholder-nutribowl-muted/65 bg-white"
+                    className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[var(--primary)] text-nutribowl-brown font-bold placeholder-nutribowl-muted/65 bg-white"
                   />
                 </div>
 
@@ -1227,7 +1227,7 @@ export function AdminDashboard({ onLogout }) {
                     placeholder="e.g. 45"
                     value={menuFormData.price}
                     onChange={(e) => setMenuFormData(prev => ({ ...prev, price: e.target.value }))}
-                    className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[#004700] text-nutribowl-brown font-bold placeholder-nutribowl-muted/65 bg-white"
+                    className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[var(--primary)] text-nutribowl-brown font-bold placeholder-nutribowl-muted/65 bg-white"
                   />
                 </div>
 
@@ -1239,7 +1239,7 @@ export function AdminDashboard({ onLogout }) {
                     placeholder="https://images.unsplash.com/..."
                     value={menuFormData.image}
                     onChange={(e) => setMenuFormData(prev => ({ ...prev, image: e.target.value }))}
-                    className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[#004700] text-nutribowl-brown font-bold placeholder-nutribowl-muted/65 bg-white"
+                    className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[var(--primary)] text-nutribowl-brown font-bold placeholder-nutribowl-muted/65 bg-white"
                   />
                 </div>
 
@@ -1251,7 +1251,7 @@ export function AdminDashboard({ onLogout }) {
                     placeholder="e.g. High Protein, Fiber Rich"
                     value={menuFormData.tags}
                     onChange={(e) => setMenuFormData(prev => ({ ...prev, tags: e.target.value }))}
-                    className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[#004700] text-nutribowl-brown font-bold placeholder-nutribowl-muted/65 bg-white"
+                    className="w-full px-4 py-2.5 rounded-xl border border-nutribowl-border outline-none focus:border-[var(--primary)] text-nutribowl-brown font-bold placeholder-nutribowl-muted/65 bg-white"
                   />
                 </div>
 
@@ -1365,7 +1365,7 @@ export function AdminDashboard({ onLogout }) {
                   </button>
                   <button
                     type="submit"
-                    className="px-6 py-2.5 bg-[#004700] hover:bg-[#003000] text-white rounded-xl font-black transition-all flex items-center gap-1.5 shadow-md active:scale-95 animate-fade-in"
+                    className="px-6 py-2.5 bg-[var(--primary)] hover:bg-[#003000] text-white rounded-xl font-black transition-all flex items-center gap-1.5 shadow-md active:scale-95 animate-fade-in"
                   >
                     <Check size={16} />
                     <span>{editingItem ? 'Save Changes' : 'Create Item'}</span>

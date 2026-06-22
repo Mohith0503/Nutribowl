@@ -70,7 +70,7 @@ export function Navbar() {
             {/* Cart Trigger Button */}
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative p-2.5 rounded-full bg-nutribowl-orange text-white hover:bg-[#B45014] transition-all shadow-premium hover:shadow-premium-hover active:scale-95 flex items-center justify-center gap-1 group"
+              className="relative p-2.5 rounded-full bg-nutribowl-orange text-white hover:bg-[var(--primary-hover)] transition-all shadow-premium hover:shadow-premium-hover active:scale-95 flex items-center justify-center gap-1 group"
               aria-label="Open Cart"
             >
               <ShoppingCart size={18} className="group-hover:rotate-6 transition-transform" />
