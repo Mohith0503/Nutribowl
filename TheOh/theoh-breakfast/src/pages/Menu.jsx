@@ -124,7 +124,8 @@ export function Menu() {
     image: c.image || 'https://images.unsplash.com/photo-1517673132405-a56a62b18caf?w=600&q=80',
     desc: c.description || c.desc || (c.addon_items ? `With ${c.base_item} and toppings: ${c.addon_items.join(', ')}` : ''),
     tags: c.tags && c.tags.length > 0 ? c.tags : (c.combo_tag ? [c.combo_tag] : []),
-    inStock: c.in_stock !== false && c.inStock !== false
+    inStock: c.in_stock !== false && c.inStock !== false,
+    nutrition: c.nutrition
   });
 
   // Filters for Bases
