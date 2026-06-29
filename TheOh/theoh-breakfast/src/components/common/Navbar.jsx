@@ -1,12 +1,14 @@
 // src/components/common/Navbar.jsx
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { ShoppingCart, Leaf, Menu, X } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 
 export function Navbar() {
   const { totalCartItems, setIsCartOpen } = useCart();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
 
   const linkStyles = ({ isActive }) =>
     `text-sm font-semibold tracking-wide uppercase transition-colors duration-200 py-1.5 px-3 rounded-full ${isActive
@@ -28,7 +30,7 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navBgClass = scrolled
+  const navBgClass = (!isHomePage || scrolled)
     ? 'bg-nutribowl-beige border-b border-nutribowl-border shadow-sm'
     : 'bg-transparent'; // fully transparent, no blur
 

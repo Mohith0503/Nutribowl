@@ -363,17 +363,18 @@ export function Menu() {
                         </h3>
                       </div>
 
-                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                      <div className="flex overflow-x-auto gap-4 pb-3 scrollbar-none snap-x snap-mandatory sm:grid sm:grid-cols-3 md:grid-cols-4 sm:overflow-x-visible">
                         {items.map((addon) => {
                           const isSelected = selectedAddons.some((a) => a.id === addon.id);
                           return (
-                            <MenuCard
-                              key={addon.id}
-                              item={addon}
-                              selected={isSelected}
-                              onClick={() => toggleAddon(addon)}
-                              showDesc={false}
-                            />
+                            <div key={addon.id} className="w-[145px] sm:w-auto shrink-0 snap-start">
+                              <MenuCard
+                                item={addon}
+                                selected={isSelected}
+                                onClick={() => toggleAddon(addon)}
+                                showDesc={false}
+                              />
+                            </div>
                           );
                         })}
                       </div>
@@ -509,9 +510,9 @@ export function Menu() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-            className="fixed bottom-0 left-0 right-0 bg-white border-t border-nutribowl-border/70 py-4 px-4 sm:px-6 shadow-[0_-8px_30px_rgba(92,61,32,0.1)] z-30"
+            className="fixed z-30 bg-white border-t border-nutribowl-border/70 shadow-[0_-8px_30px_rgba(92,61,32,0.1)] transition-all duration-300 py-3.5 sm:py-4 px-4 sm:px-6 bottom-0 left-0 right-0 max-sm:bottom-4 max-sm:mx-4 max-sm:rounded-3xl max-sm:border max-sm:border-nutribowl-border/75 max-sm:shadow-[0_10px_45px_rgba(92,61,32,0.16)]"
           >
-            <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 select-none">
+            <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 select-none">
               
               {/* Quantities adjuster */}
               <div className="flex items-center gap-4">
